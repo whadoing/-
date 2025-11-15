@@ -428,12 +428,9 @@ ${phoneNumber && isPhoneValid ? `رقم الهاتف: ${phoneNumber}` : ""}
 
 
 
-
-
   return ( 
     <div className="min-h-screen flex items-center justify-center p-6">
       <div className="w-full max-w-2xl">
-        
         {/* Header */}
         <div className="text-center mb-8">
           <button
@@ -698,46 +695,6 @@ ${phoneNumber && isPhoneValid ? `رقم الهاتف: ${phoneNumber}` : ""}
       </p>
     </div>
   </>
-)}
-{/* خانة رفع الملف */}
-{formData.serviceType === "print" && (
-  <div>
-    {/* ... كود رفع الملف ... */}
-  </div>
-)}
-
-{/* واجهة الأسعار */}
-{formData.serviceType === "print" && fileInfo?.pageCount && (
-  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 mb-4">
-    <h4 className="text-white font-semibold mb-2">تفاصيل السعر حسب الصفحات</h4>
-    <table className="w-full text-left border-collapse">
-      <thead>
-        <tr>
-          <th className="border-b border-white/30 p-2 text-white">عدد الصفحات</th>
-          <th className="border-b border-white/30 p-2 text-white">السعر قبل الخصم</th>
-          <th className="border-b border-white/30 p-2 text-white">السعر بعد الخصم</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td className="border-b border-white/30 p-2 text-white">{fileInfo.pageCount}</td>
-          <td className="border-b border-white/30 p-2 text-red-400">
-            {pageCountBeforeDiscount(fileInfo.pageCount)} ريال
-          </td>
-          <td className="border-b border-white/30 p-2 text-green-400 font-bold">
-            {price} ريال
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-)}
-
-{/* السعر النهائي */}
-{price > 0 && (
-  <div className="bg-green-500/20 border border-green-500/30 rounded-xl p-4">
-    ...
-  </div>
 )}
 
 
