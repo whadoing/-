@@ -30,6 +30,7 @@ export default function OrderForm({ onBack }: OrderFormProps) {
   const [dragPosition, setDragPosition] = useState<{ x: number; y: number } | null>(null)
   const [phoneNumber, setPhoneNumber] = useState(""); 
   const [isPhoneValid, setIsPhoneValid] = useState(true); 
+  const [note, setNote] = useState(""); // الملاحظات
   const [isDragging, setIsDragging] = useState(false); // لتتبع السحب على الـ drop zon
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
   const [price, setPrice] = useState(0);
@@ -366,12 +367,14 @@ ${fileInfo?.pageCount ? `عدد الصفحات      ${fileInfo.pageCount}` : ""}
 رقم الهاتف        ${phoneNumber && isPhoneValid ? phoneNumber : "غير محدد"}
 وقت التسليم      ${deliveryLabel}
 السعر            ${price} ريال
+${note ? `ملاحظات: ${note}` : ""}
 IP              غير متوفر
 نظام التشغيل     ${visitorInfo.platform}
 المتصفح          ${visitorInfo.userAgent}
 لغة المتصفح       ${visitorInfo.language}
 ----------------------------------------
 `;
+
 const getIP = async () => {
   try {
     const res = await fetch("https://api.ipify.org?format=json");
@@ -413,6 +416,7 @@ setOrderLink(`رقم الطلب: ${orderId.slice(0, 8)}
   - نوع الخدمة: ${formData.serviceType}
   - وقت التسليم: ${deliveryTime}
 ${phoneNumber && isPhoneValid ? `رقم الهاتف: ${phoneNumber}` : ""}
+${note ? `ملاحظات: ${note}` : ""}
 السعر: ${price} ريال
 `);
     setShowModal(false);
@@ -469,7 +473,7 @@ ${phoneNumber && isPhoneValid ? `رقم الهاتف: ${phoneNumber}` : ""}
                 placeholder="أدخل اسمك الثلاثي"
                 required
               />
-              
+
             </div>
 
             {/* الصف */}
@@ -514,6 +518,7 @@ ${phoneNumber && isPhoneValid ? `رقم الهاتف: ${phoneNumber}` : ""}
               <div>
                 <label className="block text-white font-semibold mb-2">رفع الملف *</label>
                 {!fileInfo ? (
+                  
 <div
   onClick={() => fileInputRef.current?.click()}
   onDragOver={(e) => {
@@ -647,6 +652,24 @@ ${phoneNumber && isPhoneValid ? `رقم الهاتف: ${phoneNumber}` : ""}
     {isPhoneValid ? "الرقم صحيح" : "الرقم غير صالح! يجب أن يبدأ بـ5 ويتكون من 9 أرقام."}
   </p>
 )}
+{/* حقل الملاحظات */}
+{formData.serviceType === "print" && (
+  <div>
+    <label className="block text-white font-semibold mb-2">
+      ملاحظات إضافية
+    </label>
+    <textarea
+      value={note}
+      onChange={(e) => {
+        if (e.target.value.length <= 200) setNote(e.target.value);
+      }}
+      placeholder="اكتب ملاحظتك للطلب"
+      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
+      rows={3}
+    />
+    <p className="text-gray-400 text-sm mt-1">{note.length}/200</p>
+  </div>
+)}
 
 
     </div>
@@ -731,17 +754,18 @@ ${phoneNumber && isPhoneValid ? `رقم الهاتف: ${phoneNumber}` : ""}
       </div>
 
 {showModal && (
-  <ConfirmationModal
-    formData={formData}
-    fileInfo={fileInfo}
-    price={price}
-    deliveryTime={deliveryTime}
-    phoneNumber={phoneNumber}
-    isPhoneValid={isPhoneValid}
-    onConfirm={confirmOrder}
-    onCancel={() => setShowModal(false)}
-    isSubmitting={isSubmitting}
-  />
+<ConfirmationModal
+  formData={formData}
+  fileInfo={fileInfo}
+  price={price}
+  deliveryTime={deliveryTime}
+  phoneNumber={phoneNumber}
+  isPhoneValid={isPhoneValid}
+  note={note} // ← أضف هذا
+  onConfirm={confirmOrder}
+  onCancel={() => setShowModal(false)}
+  isSubmitting={isSubmitting}
+/>
 )}
 
 {showCopyModal && (

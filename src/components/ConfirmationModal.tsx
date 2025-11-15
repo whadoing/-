@@ -8,20 +8,18 @@ interface FileInfo {
 }
 
 interface ConfirmationModalProps {
-  formData: {
-    fullName: string;
-    grade: string;
-    serviceType: string;
-  };
+  formData: any;
   fileInfo: FileInfo | null;
   price: number;
   deliveryTime: string;
   phoneNumber: string;
   isPhoneValid: boolean;
+  note?: string; // ← أضف هذا
   onConfirm: () => void;
   onCancel: () => void;
   isSubmitting: boolean;
 }
+
 
 export default function ConfirmationModal({
   formData,
@@ -30,10 +28,12 @@ export default function ConfirmationModal({
   deliveryTime,
   phoneNumber,
   isPhoneValid,
+  note,           // ← أضف هذا السطر
   onConfirm,
   onCancel,
   isSubmitting
 }: ConfirmationModalProps) {
+
 
   const [countdown, setCountdown] = useState(5);
   const [canConfirm, setCanConfirm] = useState(false);
@@ -90,6 +90,13 @@ export default function ConfirmationModal({
               {phoneNumber && isPhoneValid ? phoneNumber : "غير محدد"}
             </span>
           </div>
+          {/* ملاحظات إضافية */}
+{note && (
+  <div className="flex justify-between items-center py-2 border-b border-white/20">
+    <span className="text-gray-300">ملاحظات:</span>
+    <span className="text-white font-semibold">{note}</span>
+  </div>
+)}
 
           {fileInfo && (
             <div className="py-2 border-b border-white/20">
