@@ -507,53 +507,75 @@ ${note ? `ملاحظات: ${note}` : ""}
               </select>
             </div>
 
-            {/* نوع الخدمة */}
-            <div>
-              <label className="block text-white font-semibold mb-2">نوع الخدمة *</label>
-              {/* منتجات التسوق */}
-{formData.serviceType === "shopping" && (
-  <div className="mt-4">
-    <h3 className="text-white font-bold mb-2 text-xl">منتجات التسوق</h3>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      {products.map((product) => {
-        const inCart = cart.find((item) => item.id === product.id);
-        return (
-          <div key={product.id} className="bg-white/10 rounded-xl p-4 flex flex-col items-center border border-white/20">
-            <img src={product.image} alt={product.name} className="w-20 h-20 object-cover mb-2 rounded-lg" />
-            <p className="text-white font-medium">{product.name}</p>
-            <p className="text-green-400 font-bold">{product.price} ريال</p>
-<button
-  onClick={() => {
-    if (inCart) {
-      setCart(cart.filter(item => item.id !== product.id)); // حذف من السلة
-    } else {
-      setCart([...cart, product]); // إضافة للسلة
-    }
-  }}
-  className={`mt-2 w-full py-2 rounded-xl font-semibold transition-all ${
-    inCart ? "bg-red-500 hover:bg-red-600" : "bg-blue-500 hover:bg-blue-600"
-  } text-white`}
->
-  {inCart ? "حذف من السلة" : "أضف للسلة"}
-</button>
-          </div>
-        );
-      })}
-    </div>
+{/* نوع الخدمة */}
+<div>
+  <label className="block text-white font-semibold mb-2">نوع الخدمة *</label>
+  
+  {/* زر اختيار الخدمة */}
+  <select
+    value={formData.serviceType}
+    onChange={(e) => handleServiceChange(e.target.value)}
+    className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
+    required
+  >
+    <option value="">اختر نوع الخدمة</option>
+    <option value="print">طباعة ملف</option>
+    <option value="shopping">التسوق</option>
+  </select>
 
-    {/* السعر الإجمالي للسلة */}
-    {cart.length > 0 && (
-      <div className="bg-green-500/20 border border-green-500/30 rounded-xl p-4 mt-4">
-        <p className="text-white font-semibold mb-2">
-          السعر الإجمالي للسلة:
-          <span className="text-green-400 font-bold ml-2">
-            {cart.reduce((sum, item) => sum + item.price, 0)} ريال
-          </span>
-        </p>
+  {/* منتجات التسوق تظهر فقط عند اختيار "shopping" */}
+  {formData.serviceType === "shopping" && (
+    <div className="mt-4">
+      <h3 className="text-white font-bold mb-2 text-xl">منتجات التسوق</h3>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {products.map((product) => {
+          const inCart = cart.find((item) => item.id === product.id);
+          return (
+            <div
+              key={product.id}
+              className="bg-white/10 rounded-xl p-4 flex flex-col items-center border border-white/20"
+            >
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-20 h-20 object-cover mb-2 rounded-lg"
+              />
+              <p className="text-white font-medium">{product.name}</p>
+              <p className="text-green-400 font-bold">{product.price} ريال</p>
+
+              <button
+                onClick={() => {
+                  if (inCart) {
+                    setCart(cart.filter((item) => item.id !== product.id));
+                  } else {
+                    setCart([...cart, product]);
+                  }
+                }}
+                className={`mt-2 w-full py-2 rounded-xl font-semibold transition-all ${
+                  inCart ? "bg-red-500 hover:bg-red-600" : "bg-blue-500 hover:bg-blue-600"
+                } text-white`}
+              >
+                {inCart ? "حذف من السلة" : "أضف للسلة"}
+              </button>
+            </div>
+          );
+        })}
       </div>
-    )}
-  </div>
-)}
+
+      {/* السعر الإجمالي للسلة */}
+      {cart.length > 0 && (
+        <div className="bg-green-500/20 border border-green-500/30 rounded-xl p-4 mt-4">
+          <p className="text-white font-semibold mb-2">
+            السعر الإجمالي للسلة:
+            <span className="text-green-400 font-bold ml-2">
+              {cart.reduce((sum, item) => sum + item.price, 0)} ريال
+            </span>
+          </p>
+        </div>
+      )}
+    </div>
+  )}
 
 <select
   value={formData.serviceType}
