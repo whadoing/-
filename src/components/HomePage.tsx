@@ -1,4 +1,4 @@
-import { MessageCircle, FileText, BookOpen, Printer, Settings } from "lucide-react";
+import { MessageCircle, FileText, BookOpen, Printer, Settings, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 
 interface HomePageProps {
@@ -56,6 +56,13 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
 
         {/* Services Preview */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
+{/* خدمة السوق أونلاين */}
+<div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
+  <ShoppingCart className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
+  <h3 className="text-xl font-semibold text-white mb-2">خدمة السوق أونلاين</h3>
+  <p className="text-gray-300">توصيل المستلزمات والملفات للطالب داخل المدرسة</p>
+</div>
+
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
             <FileText className="w-12 h-12 text-blue-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-white mb-2">طباعة ملف</h3>
