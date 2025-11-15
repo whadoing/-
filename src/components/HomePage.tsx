@@ -130,16 +130,18 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
         {/* Modal الشروط والقواعد */}
         {/* Modal الشروط والقواعد */}
 {showAgreement && (
-  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
-    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 w-full max-w-lg text-white">
-      <h2 className="text-2xl font-bold mb-6">شروط وقواعد الطلب</h2>
-      <ul className="list-decimal list-inside mb-6 space-y-4 text-gray-200 text-base leading-relaxed">
-        <li>الرجاء استخدام اسم صحيح عند تقديم الطلب، أي اسم شخص حقيقي فقط.</li>
-        <li>يجب دفع قيمة الطلب كاملة قبل تنفيذه.</li>
-        <li>عدم تكرار الطلبات بشكل متعمد (سبام)، سيتم احتساب ثمن الطلبات المكررة.</li>
-        <li>أي محتوى غير لائق أو مخالف سيتم رفض الطلب فوراً.</li>
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 w-11/12 max-w-lg text-white font-sans">
+      <h2 className="text-2xl font-bold mb-4 text-yellow-400 text-center">الشروط والقواعد</h2>
+      
+      <ul className="list-disc list-inside mb-6 space-y-2 text-gray-200 text-lg leading-relaxed">
+        <li>استخدام أسماء وهمية أو غير صحيحة (مثل حيوانات أو جماد) يؤدي لإلغاء الطلب.</li>
+        <li>إرسال الطلبات بشكل متكرر يعتبر سبام، وسيتم تحصيل ثمن الطلبات المكررة.</li>
+        <li>عدم دفع قيمة الطلب يعتبر مخالفة وسيتم التواصل مع الجهات المختصة.</li>
         <li>لا يتحمل الفريق أي مسؤولية عن المعلومات غير الصحيحة المقدمة من المستخدم.</li>
         <li>يتم التعامل مع أي مخالفة للقواعد بجدية وفق النظام الداخلي.</li>
+        <li>أي محاولة لإساءة استخدام الخدمة تؤدي للحظر الدائم من الطلبات.</li>
+
       </ul>
 
       <div className="flex items-start mb-6">
@@ -148,17 +150,20 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
           id="agree"
           checked={agreed}
           onChange={() => setAgreed(!agreed)}
-          className="mt-1 w-6 h-6 mr-3"
+          className="mt-1 w-6 h-6 mr-4"
         />
-        <label htmlFor="agree" className="text-gray-300 text-lg leading-snug">
-          أقر بأنني قرأت الشروط والقواعد وأوافق عليها
+        <label
+          htmlFor="agree"
+          className="text-gray-300 text-lg leading-snug"
+        >
+          أقر بأنني قرأت جميع الشروط والقواعد وأوافق عليها
         </label>
       </div>
 
       <button
         disabled={!agreed}
         onClick={confirmAgreement}
-        className={`w-full py-3 rounded-xl text-white font-bold text-lg transition-all duration-300 ${
+        className={`w-full py-3 rounded-xl text-white font-bold transition-all duration-300 ${
           agreed ? "bg-green-500 hover:bg-green-600" : "bg-gray-600 cursor-not-allowed"
         }`}
       >
