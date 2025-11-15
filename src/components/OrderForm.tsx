@@ -42,21 +42,22 @@ const [orderLink, setOrderLink] = useState(""); // يخزن تفاصيل الط�
   // 🔹 هنا تحطهم
   
 // السعر قبل الخصم (أو السعر المرجعي) حسب عدد الصفحات
-const pageCountBeforeDiscount = (pageCount?: number) => {
+const pageCountBeforeDiscount = (pageCount?: number, fileType?: string) => {
   if (!pageCount) return 0;
 
-  // نرفع السعر بنسبة تقريبية 20%-30% عشان يظهر "قبل الخصم"
-  if (pageCount === 1) return 2;
+  // صفحة واحدة سواء PDF أو صورة = 1.5 ريال قبل الخصم
+  if (pageCount === 1) return 1.5;
+
   if (pageCount === 2) return 2;
   if (pageCount === 3) return 2;
-  if (pageCount >= 4 && pageCount <= 5) return 3;
-  if (pageCount >= 6 && pageCount <= 10) return 4;
+  if (pageCount >= 4 && pageCount <= 5) return 4;
+  if (pageCount >= 6 && pageCount <= 10) return 5;
   if (pageCount >= 11 && pageCount <= 20) return 8;
   if (pageCount >= 21 && pageCount <= 30) return 15;
   if (pageCount >= 31 && pageCount <= 40) return 20;
   if (pageCount >= 41 && pageCount <= 50) return 25;
   if (pageCount >= 51 && pageCount <= 60) return 30;
-  if (pageCount > 60) return 35; // أي شيء فوق 60
+  if (pageCount > 60) return 35;
 
   return 0;
 };
@@ -708,9 +709,10 @@ ${phoneNumber && isPhoneValid ? `رقم الهاتف: ${phoneNumber}` : ""}
         {/* السعر قبل التخفيض: الفرق صغير عشان يكون منطقي */}
 {/* السعر قبل التخفيض */}
 <span className="line-through text-red-400 text-sm block">
-  {fileInfo?.file.type.includes("image") 
-    ? "1" 
-    : pageCountBeforeDiscount(fileInfo?.pageCount)} ريال
+  {fileInfo?.file.type.includes("image") || fileInfo?.pageCount === 1
+    ? "1.5" 
+    : pageCountBeforeDiscount(fileInfo?.pageCount)}
+  ريال
 </span>
         {/* السعر النهائي */}
         <span className="text-green-400 font-bold text-xl">{price} ريال</span>
