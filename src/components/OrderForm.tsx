@@ -169,7 +169,10 @@ const calculatePrice = (serviceType: string, file?: File, pageCount?: number) =>
   setFormData({ ...formData, serviceType });
   setDeliveryTime("");
 
-  if (serviceType !== "print") {
+  if (serviceType === "shopping") {
+    setShowShoppingModal(true);
+    setPrice(cart.reduce((sum, item) => sum + item.price, 0));
+  } else if (serviceType !== "print") {
     setFileInfo(null);
     const newPrice = calculatePrice(serviceType);
     setPrice(newPrice);
@@ -177,6 +180,8 @@ const calculatePrice = (serviceType: string, file?: File, pageCount?: number) =>
     setPrice(0);
   }
 };
+
+
 
 // ===== خدمة النص كصورة مع التحكم في الخط واللون =====
 // ===== إرسال النص كصورة باستخدام Canvas مع Glow =====
@@ -607,6 +612,7 @@ ${note ? `ملاحظات: ${note}` : ""}
     </div>
   </div>
 )}
+
 
     // منع اختيار الخدمات القادمة
     if (value === "summary" || value === "book_summary") return;
