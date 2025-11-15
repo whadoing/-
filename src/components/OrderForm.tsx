@@ -85,7 +85,7 @@ const pageCountBeforeDiscount = (pageCount?: number, fileType?: string) => {
   const isWorkingHours = () => {
   const now = new Date();
   const hour = now.getHours();
-  return hour >= 12 && hour < 24; // من 12 ظهرًا إلى 10 مساءً
+  return hour >= 12 && hour < 22; // من 12 ظهرًا إلى 10 مساءً
 };
 
 
