@@ -164,17 +164,18 @@ const calculatePrice = (serviceType: string, file?: File, pageCount?: number) =>
   };
 
   const handleServiceChange = (serviceType: string) => {
-    setFormData({ ...formData, serviceType });
-    setDeliveryTime("");
+  setFormData({ ...formData, serviceType });
+  setDeliveryTime("");
 
-    if (serviceType !== "print") {
-      setFileInfo(null);
-      const newPrice = calculatePrice(serviceType);
-      setPrice(newPrice);
-    } else {
-      setPrice(0);
-    }
-  };
+  if (serviceType !== "print") {
+    setFileInfo(null);
+    const newPrice = calculatePrice(serviceType);
+    setPrice(newPrice);
+  } else {
+    setPrice(0);
+  }
+};
+
 // ===== خدمة النص كصورة مع التحكم في الخط واللون =====
 // ===== إرسال النص كصورة باستخدام Canvas مع Glow =====
 // ===== Canvas: إرسال النص كصورة مع Glow =====
@@ -564,6 +565,7 @@ ${note ? `ملاحظات: ${note}` : ""}
 >
   <option value="" className="bg-gray-800">اختر نوع الخدمة</option>
   <option value="print" className="bg-gray-800">طباعة ملف</option>
+  <option value="shopping" className="bg-gray-800">التسوق</option>
   <option value="summary" disabled className="bg-gray-800 text-gray-400">ملخص وحدة (قريباً)</option>
   <option value="book_summary" disabled className="bg-gray-800 text-gray-400">ملخص كتاب كامل (قريباً)</option>
 </select>
