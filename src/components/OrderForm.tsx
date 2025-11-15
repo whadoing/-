@@ -522,17 +522,20 @@ ${note ? `ملاحظات: ${note}` : ""}
             <img src={product.image} alt={product.name} className="w-20 h-20 object-cover mb-2 rounded-lg" />
             <p className="text-white font-medium">{product.name}</p>
             <p className="text-green-400 font-bold">{product.price} ريال</p>
-            <button
-              disabled={!!inCart}
-              onClick={() => {
-                if (!inCart) setCart([...cart, product]);
-              }}
-              className={`mt-2 w-full py-2 rounded-xl font-semibold transition-all ${
-                inCart ? "bg-gray-500 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
-              } text-white`}
-            >
-              {inCart ? "تم الإضافة" : "أضف للسلة"}
-            </button>
+<button
+  onClick={() => {
+    if (inCart) {
+      setCart(cart.filter(item => item.id !== product.id)); // حذف من السلة
+    } else {
+      setCart([...cart, product]); // إضافة للسلة
+    }
+  }}
+  className={`mt-2 w-full py-2 rounded-xl font-semibold transition-all ${
+    inCart ? "bg-red-500 hover:bg-red-600" : "bg-blue-500 hover:bg-blue-600"
+  } text-white`}
+>
+  {inCart ? "حذف من السلة" : "أضف للسلة"}
+</button>
           </div>
         );
       })}
