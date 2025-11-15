@@ -47,6 +47,8 @@ const [orderLink, setOrderLink] = useState(""); // يخزن تفاصيل الط�
   const [isSubmitting, setIsSubmitting] = useState(false);
 const [cart, setCart] = useState<{ id: string; name: string; price: number; image?: string }[]>([]);
 const totalPrice = price + cart.reduce((sum, item) => sum + item.price, 0);
+const [showShoppingModal, setShowShoppingModal] = useState(false);
+
 
   // 🔹 هنا تحطهم
   
@@ -560,8 +562,55 @@ ${note ? `ملاحظات: ${note}` : ""}
   value={formData.serviceType}
   onChange={(e) => {
     const value = e.target.value;
+
+    if (value === "shopping") {
+      setShowShoppingModal(true); // فتح نافذة التسوق
+      return;
+    }
+{showShoppingModal && (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 max-w-3xl w-full border border-white/20 shadow-2xl">
+      <h3 className="text-2xl font-bold text-white mb-4 text-center">منتجات التسوق</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+        {products.map((product) => {
+          const inCart = cart.find((item) => item.id === product.id);
+          return (
+            <div key={product.id} className="bg-white/10 rounded-xl p-4 flex flex-col items-center border border-white/20">
+              <img src={product.image} alt={product.name} className="w-20 h-20 object-cover mb-2 rounded-lg" />
+              <p className="text-white font-medium">{product.name}</p>
+              <p className="text-green-400 font-bold">{product.price} ريال</p>
+              <button
+                onClick={() => {
+                  if (inCart) setCart(cart.filter(item => item.id !== product.id));
+                  else setCart([...cart, product]);
+                }}
+                className={`mt-2 w-full py-2 rounded-xl font-semibold transition-all ${inCart ? "bg-red-500 hover:bg-red-600" : "bg-blue-500 hover:bg-blue-600"} text-white`}
+              >
+                {inCart ? "حذف من السلة" : "أضف للسلة"}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="flex justify-between items-center">
+        <span className="text-white font-semibold text-lg">
+          السعر الإجمالي للسلة: <span className="text-green-400 font-bold">{cart.reduce((sum, item) => sum + item.price, 0)} ريال</span>
+        </span>
+        <button
+          onClick={() => setShowShoppingModal(false)}
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-2 rounded-xl transition-all"
+        >
+          تم
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     // منع اختيار الخدمات القادمة
     if (value === "summary" || value === "book_summary") return;
+
     handleServiceChange(value);
   }}
   className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
