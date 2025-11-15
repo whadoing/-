@@ -45,18 +45,21 @@ const [orderLink, setOrderLink] = useState(""); // يخزن تفاصيل الط�
 const pageCountBeforeDiscount = (pageCount?: number) => {
   if (!pageCount) return 0;
 
-  if (pageCount >= 1 && pageCount <= 3) return 1;
-  if (pageCount === 4 || pageCount === 5) return 4;
-  if (pageCount >= 6 && pageCount <= 10) return 5;
+  if (pageCount === 1) return 1;
+  if (pageCount === 2) return 1;
+  if (pageCount === 3) return 1;
+  if (pageCount >= 4 && pageCount <= 5) return 2;
+  if (pageCount >= 6 && pageCount <= 10) return 3;
   if (pageCount >= 11 && pageCount <= 20) return 6;
   if (pageCount >= 21 && pageCount <= 30) return 12;
   if (pageCount >= 31 && pageCount <= 40) return 16;
   if (pageCount >= 41 && pageCount <= 50) return 20;
   if (pageCount >= 51 && pageCount <= 60) return 25;
-  if (pageCount > 60) return 60;
+  if (pageCount > 60) return 25; // أي شيء فوق 60 يظل 25
 
   return 0;
 };
+
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const getVisitorInfo = () => {
@@ -89,9 +92,17 @@ const calculatePrice = (serviceType: string, file?: File, pageCount?: number) =>
   if (serviceType === "print" && file && file.type === "application/pdf") {
     if (!pageCount) return 0;
 
-    // استخدام الدالة الجديدة لحساب السعر
-    return pageCountBeforeDiscount(pageCount);
-
+    if (pageCount === 1) return 1;
+    if (pageCount === 2) return 1;
+    if (pageCount === 3) return 1;
+    if (pageCount >= 4 && pageCount <= 5) return 2;
+    if (pageCount >= 6 && pageCount <= 10) return 3;
+    if (pageCount >= 11 && pageCount <= 20) return 6;
+    if (pageCount >= 21 && pageCount <= 30) return 12;
+    if (pageCount >= 31 && pageCount <= 40) return 16;
+    if (pageCount >= 41 && pageCount <= 50) return 20;
+    if (pageCount >= 51 && pageCount <= 60) return 25;
+    if (pageCount > 60) return 25;
   } else if (serviceType === "print" && file && file.type.includes("image")) {
     return 1; // صورة واحدة = 1 ريال
   } else if (serviceType === "summary") {
@@ -99,8 +110,10 @@ const calculatePrice = (serviceType: string, file?: File, pageCount?: number) =>
   } else if (serviceType === "book_summary") {
     return 20; // ملخص كتاب كامل ثابت
   }
+
   return 0;
 };
+
 
 
 
