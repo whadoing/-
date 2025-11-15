@@ -55,7 +55,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
         </div>
 
         {/* Services Preview */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid md:grid-cols-4 gap-6 mb-12">
 {/* خدمة السوق أونلاين */}
 <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
   <ShoppingCart className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
