@@ -469,10 +469,7 @@ ${phoneNumber && isPhoneValid ? `رقم الهاتف: ${phoneNumber}` : ""}
                 placeholder="أدخل اسمك الثلاثي"
                 required
               />
-              <p className="text-red-400 text-sm mt-1">
-                إذا لم يكن الاسم حقيقي، لن يتم تسليم المشروع.  
-                أي كلام كذبي أو تجارب غير حقيقية سيتم إبلاغ المرشد الطلابي والوكيل.
-              </p>
+              
             </div>
 
             {/* الصف */}
