@@ -63,12 +63,19 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
         </div>
 
         {/* Main CTA Button */}
-        <button
-          onClick={onStartOrder}
-          className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-12 rounded-2xl text-xl shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105 glow-button"
-        >
-          ابدأ الطلب الآن
-        </button>
+<div className="mb-6">
+  <p className="text-yellow-400 text-xl font-bold mb-4 drop-shadow-lg">
+    أسعارنا أرخص من المكاتب 🔥
+  </p>
+
+  <button
+    onClick={onStartOrder}
+    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-12 rounded-2xl text-xl shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105 glow-button"
+  >
+    ابدأ الطلب الآن
+  </button>
+</div>
+
 
 {/* Working Hours + Contact */}
 <div className="mt-12 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 text-center">
