@@ -41,22 +41,19 @@ const [orderLink, setOrderLink] = useState(""); // يخزن تفاصيل الط�
 
   // 🔹 هنا تحطهم
   
+// السعر قبل الخصم (أو السعر المرجعي) حسب عدد الصفحات
 const pageCountBeforeDiscount = (pageCount?: number) => {
   if (!pageCount) return 0;
 
-  if (pageCount === 1) return 1.5;
-  if (pageCount === 2) return 2;
-  if (pageCount === 3) return 3;
+  if (pageCount >= 1 && pageCount <= 3) return 1;
   if (pageCount === 4 || pageCount === 5) return 4;
-  if (pageCount === 6) return 5;
-  if (pageCount === 7) return 7;
-  if (pageCount >= 8 && pageCount <= 10) return 7;
-  if (pageCount >= 11 && pageCount <= 20) return 10;
-  if (pageCount >= 21 && pageCount <= 30) return 20;
-  if (pageCount >= 31 && pageCount <= 40) return 28;
-  if (pageCount >= 41 && pageCount <= 50) return 35;
-  if (pageCount >= 51 && pageCount <= 60) return 39;
-  if (pageCount > 60) return 45;
+  if (pageCount >= 6 && pageCount <= 10) return 5;
+  if (pageCount >= 11 && pageCount <= 20) return 6;
+  if (pageCount >= 21 && pageCount <= 30) return 12;
+  if (pageCount >= 31 && pageCount <= 40) return 16;
+  if (pageCount >= 41 && pageCount <= 50) return 20;
+  if (pageCount >= 51 && pageCount <= 60) return 25;
+  if (pageCount > 60) return 60;
 
   return 0;
 };
@@ -87,30 +84,14 @@ const pageCountBeforeDiscount = (pageCount?: number) => {
 
   // حساب السعر
 // حساب السعر النهائي بعد الخصم
+// حساب السعر النهائي حسب الخدمة ونوع الملف
 const calculatePrice = (serviceType: string, file?: File, pageCount?: number) => {
   if (serviceType === "print" && file && file.type === "application/pdf") {
     if (!pageCount) return 0;
 
-    // السعر قبل الخصم
-    let basePrice = 0;
-    if (pageCount === 1) basePrice = 1.5;
-    else if (pageCount === 2) basePrice = 2;
-    else if (pageCount === 3) basePrice = 3;
-    else if (pageCount === 4 || pageCount === 5) basePrice = 4;
-    else if (pageCount === 6) basePrice = 5;
-    else if (pageCount === 7) basePrice = 7;
-    else if (pageCount >= 8 && pageCount <= 10) basePrice = 7;
-    else if (pageCount >= 11 && pageCount <= 20) basePrice = 10;
-    else if (pageCount >= 21 && pageCount <= 30) basePrice = 20;
-    else if (pageCount >= 31 && pageCount <= 40) basePrice = 28;
-    else if (pageCount >= 41 && pageCount <= 50) basePrice = 35;
-    else if (pageCount >= 51 && pageCount <= 60) basePrice = 39;
-    else if (pageCount > 60) basePrice = 45;
+    // استخدام الدالة الجديدة لحساب السعر
+    return pageCountBeforeDiscount(pageCount);
 
-    // خصم 30% تقريبا (أو السعر النهائي)
-    if (pageCount === 1) return 1; // الصفحة الواحدة 1 ريال بعد الخصم
-    
-    return Math.round(basePrice * 0.7); // تقريبياً 30% خصم لبقية الصفحات
   } else if (serviceType === "print" && file && file.type.includes("image")) {
     return 1; // صورة واحدة = 1 ريال
   } else if (serviceType === "summary") {
@@ -120,6 +101,7 @@ const calculatePrice = (serviceType: string, file?: File, pageCount?: number) =>
   }
   return 0;
 };
+
 
 
 
@@ -709,9 +691,10 @@ ${phoneNumber && isPhoneValid ? `رقم الهاتف: ${phoneNumber}` : ""}
       <span className="text-white font-semibold">السعر الإجمالي:</span>
       <div className="text-right">
         {/* السعر قبل التخفيض: الفرق صغير عشان يكون منطقي */}
+{/* السعر قبل التخفيض */}
 <span className="line-through text-red-400 text-sm block">
   {fileInfo?.file.type.includes("image") 
-    ? "1.5" 
+    ? "1" 
     : pageCountBeforeDiscount(fileInfo?.pageCount)} ريال
 </span>
         {/* السعر النهائي */}
