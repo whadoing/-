@@ -7,6 +7,12 @@ import ConfirmationModal from "./ConfirmationModal";
 const DISCORD_WEBHOOK_URL =
   "https://discord.com/api/webhooks/1439038466150367232/4ccYMIvJt-dZObbjhj-bqIFR9SWGDZ5gXL7zmWuQL28xf3WHe-OFiwfOfh98FpEByRa-";
 
+  const products = [
+  { id: "p1", name: "قلم", price: 5, image: "https://via.placeholder.com/80" },
+  { id: "p2", name: "دفتر", price: 10, image: "https://via.placeholder.com/80" },
+  { id: "p3", name: "مسطرة", price: 7, image: "https://via.placeholder.com/80" },
+];
+
 const safeFileName = (file: File) => {
   return file.name.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9._-]/g, "");
 };
@@ -39,6 +45,8 @@ export default function OrderForm({ onBack }: OrderFormProps) {
   const [showCopyModal, setShowCopyModal] = useState(false); // واجهة نسخ الرابط بعد الطلب
 const [orderLink, setOrderLink] = useState(""); // يخزن تفاصيل الطل
   const [isSubmitting, setIsSubmitting] = useState(false);
+const [cart, setCart] = useState<{ id: string; name: string; price: number; image?: string }[]>([]);
+const totalPrice = price + cart.reduce((sum, item) => sum + item.price, 0);
 
   // 🔹 هنا تحطهم
   
@@ -76,10 +84,12 @@ const pageCountBeforeDiscount = (pageCount?: number, fileType?: string) => {
   const grades = ["1/1", "1/2", "1/3", "1/4", "1/5", "1/6", "1/7", "1/8"];
 
   const services = [
-    { value: "print", label: "طباعة ملف" },
-    { value: "summary", label: "ملخص وحدة" },
-    { value: "book_summary", label: "ملخص كتاب كامل" },
-  ];
+  { value: "print", label: "طباعة ملف" },
+  { value: "summary", label: "ملخص وحدة" },
+  { value: "book_summary", label: "ملخص كتاب كامل" },
+  { value: "shopping", label: "التسوق" }, // ← الخدمة الجديدة
+];
+
 
   // ساعات العمل
   const isWorkingHours = () => {
@@ -334,6 +344,7 @@ const sendOrderImage = async (
 
 
 const confirmOrder = async () => {
+  const finalPrice = totalPrice; // يشمل السعر الأصلي + سعر السلة
   const orderId = uuidv4(); // توليد رقم الطلب الفريد
   setIsSubmitting(true);
 
@@ -372,6 +383,9 @@ IP              غير متوفر
 نظام التشغيل     ${visitorInfo.platform}
 المتصفح          ${visitorInfo.userAgent}
 لغة المتصفح       ${visitorInfo.language}
+السلة: ${cart.map(p => `${p.name} (${p.price} ريال)`).join(", ")}
+السعر النهائي: ${totalPrice} ريال
+
 ----------------------------------------
 `;
 
@@ -495,6 +509,48 @@ ${note ? `ملاحظات: ${note}` : ""}
             {/* نوع الخدمة */}
             <div>
               <label className="block text-white font-semibold mb-2">نوع الخدمة *</label>
+              {/* منتجات التسوق */}
+{formData.serviceType === "shopping" && (
+  <div className="mt-4">
+    <h3 className="text-white font-bold mb-2 text-xl">منتجات التسوق</h3>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {products.map((product) => {
+        const inCart = cart.find((item) => item.id === product.id);
+        return (
+          <div key={product.id} className="bg-white/10 rounded-xl p-4 flex flex-col items-center border border-white/20">
+            <img src={product.image} alt={product.name} className="w-20 h-20 object-cover mb-2 rounded-lg" />
+            <p className="text-white font-medium">{product.name}</p>
+            <p className="text-green-400 font-bold">{product.price} ريال</p>
+            <button
+              disabled={!!inCart}
+              onClick={() => {
+                if (!inCart) setCart([...cart, product]);
+              }}
+              className={`mt-2 w-full py-2 rounded-xl font-semibold transition-all ${
+                inCart ? "bg-gray-500 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+              } text-white`}
+            >
+              {inCart ? "تم الإضافة" : "أضف للسلة"}
+            </button>
+          </div>
+        );
+      })}
+    </div>
+
+    {/* السعر الإجمالي للسلة */}
+    {cart.length > 0 && (
+      <div className="bg-green-500/20 border border-green-500/30 rounded-xl p-4 mt-4">
+        <p className="text-white font-semibold mb-2">
+          السعر الإجمالي للسلة:
+          <span className="text-green-400 font-bold ml-2">
+            {cart.reduce((sum, item) => sum + item.price, 0)} ريال
+          </span>
+        </p>
+      </div>
+    )}
+  </div>
+)}
+
 <select
   value={formData.serviceType}
   onChange={(e) => {
