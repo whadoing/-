@@ -73,7 +73,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
 {/* Working Hours + Contact */}
 <div className="mt-12 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 text-center">
   <p className="text-gray-300 mb-2">
-    <span className="text-green-400 font-semibold">ساعات العمل:</span> من 7 صباحاً إلى 10 مساءً
+    <span className="text-green-400 font-semibold">ساعات العمل:</span> من الساعة 12 ظهرًا إلى ال 10 مساءً
   </p>
   <p className="text-green-400 font-semibold">
     تواصل معي إذا أردت: <a href="tel:+966569772645" className="underline hover:text-green-300">+966 56 977 2645</a>

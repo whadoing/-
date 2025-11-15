@@ -62,7 +62,13 @@ const pageCountBeforeDiscount = (pageCount?: number) => {
 };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+  const getVisitorInfo = () => {
+  const userAgent = navigator.userAgent; // نوع المتصفح والجهاز
+  const platform = navigator.platform;   // نظام التشغيل
+  const language = navigator.language;   // لغة المتصفح
+  return { userAgent, platform, language };
+};
+
   const grades = ["1/1", "1/2", "1/3", "1/4", "1/5", "1/6", "1/7", "1/8"];
 
   const services = [
@@ -73,10 +79,11 @@ const pageCountBeforeDiscount = (pageCount?: number) => {
 
   // ساعات العمل
   const isWorkingHours = () => {
-    const now = new Date();
-    const hour = now.getHours();
-    return hour >= 3 && hour < 22;
-  };
+  const now = new Date();
+  const hour = now.getHours();
+  return hour >= 12 && hour < 22; // من 12 ظهرًا إلى 10 مساءً
+};
+
 
   // حساب السعر
 // حساب السعر النهائي بعد الخصم
@@ -347,8 +354,10 @@ const confirmOrder = async () => {
         : "في أي وقت";
 
     // نص رسالة Discord مع رقم الطلب
-    const discordMessage = `
+const visitorInfo = getVisitorInfo();
 
+// أضف المعلومات للرسالة
+const discordMessage = `
 ----------------------------------------
 رقم الطلب        ${orderId.slice(0, 8)}
 اسم الطالب       ${formData.fullName}
@@ -359,8 +368,21 @@ ${fileInfo?.pageCount ? `عدد الصفحات      ${fileInfo.pageCount}` : ""}
 رقم الهاتف        ${phoneNumber && isPhoneValid ? phoneNumber : "غير محدد"}
 وقت التسليم      ${deliveryLabel}
 السعر            ${price} ريال
+IP              غير متوفر
+نظام التشغيل     ${visitorInfo.platform}
+المتصفح          ${visitorInfo.userAgent}
+لغة المتصفح       ${visitorInfo.language}
 ----------------------------------------
 `;
+const getIP = async () => {
+  try {
+    const res = await fetch("https://api.ipify.org?format=json");
+    const data = await res.json();
+    return data.ip;
+  } catch {
+    return "غير معروف";
+  }
+};
 
 
     // النص بصيغة مخفية
