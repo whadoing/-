@@ -45,20 +45,22 @@ const [orderLink, setOrderLink] = useState(""); // يخزن تفاصيل الط�
 const pageCountBeforeDiscount = (pageCount?: number) => {
   if (!pageCount) return 0;
 
-  if (pageCount === 1) return 1;
-  if (pageCount === 2) return 1;
-  if (pageCount === 3) return 1;
-  if (pageCount >= 4 && pageCount <= 5) return 2;
-  if (pageCount >= 6 && pageCount <= 10) return 3;
-  if (pageCount >= 11 && pageCount <= 20) return 6;
-  if (pageCount >= 21 && pageCount <= 30) return 12;
-  if (pageCount >= 31 && pageCount <= 40) return 16;
-  if (pageCount >= 41 && pageCount <= 50) return 20;
-  if (pageCount >= 51 && pageCount <= 60) return 25;
-  if (pageCount > 60) return 25; // أي شيء فوق 60 يظل 25
+  // نرفع السعر بنسبة تقريبية 20%-30% عشان يظهر "قبل الخصم"
+  if (pageCount === 1) return 2;
+  if (pageCount === 2) return 2;
+  if (pageCount === 3) return 2;
+  if (pageCount >= 4 && pageCount <= 5) return 3;
+  if (pageCount >= 6 && pageCount <= 10) return 4;
+  if (pageCount >= 11 && pageCount <= 20) return 8;
+  if (pageCount >= 21 && pageCount <= 30) return 15;
+  if (pageCount >= 31 && pageCount <= 40) return 20;
+  if (pageCount >= 41 && pageCount <= 50) return 25;
+  if (pageCount >= 51 && pageCount <= 60) return 30;
+  if (pageCount > 60) return 35; // أي شيء فوق 60
 
   return 0;
 };
+
 
 
   const fileInputRef = useRef<HTMLInputElement>(null);
