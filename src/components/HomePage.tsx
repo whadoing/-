@@ -46,20 +46,20 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
             <FileText className="w-12 h-12 text-blue-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-white mb-2">طباعة ملف</h3>
-            <p className="text-gray-300">طباعة ملفات PDF والصور بجودة عالية</p>
+            <p className="text-gray-300">طباعة ملفات PDF والصور بجودة عالية ليزر </p>
           </div>
           
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
-            <BookOpen className="w-12 h-12 text-purple-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">ملخص مادة</h3>
-            <p className="text-gray-300">ملخصات شاملة للمواد الدراسية</p>
-          </div>
-          
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
-            <BookOpen className="w-12 h-12 text-green-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">ملخص كتاب كامل</h3>
-            <p className="text-gray-300">ملخصات كاملة للكتب المدرسية</p>
-          </div>
+<div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
+  <BookOpen className="w-12 h-12 text-purple-400 mx-auto mb-4" />
+  <h3 className="text-xl font-semibold text-white mb-2">ملخص وحدة</h3>
+  <p className="text-gray-300">ملخص مختصر لكل وحدة دراسية على حدة</p>
+</div>
+
+<div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
+  <BookOpen className="w-12 h-12 text-green-400 mx-auto mb-4" />
+  <h3 className="text-xl font-semibold text-white mb-2">ملخص كتاب كامل</h3>
+  <p className="text-gray-300">ملخص كامل يغطي الكتاب بأكمله</p>
+</div>
         </div>
 
         {/* Main CTA Button */}
