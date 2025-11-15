@@ -431,72 +431,71 @@ ${phoneNumber && isPhoneValid ? `رقم الهاتف: ${phoneNumber}` : ""}
 
 
   return ( 
-<div className="min-h-screen flex flex-col md:flex-row items-start justify-center p-6">
-
-  {/* نموذج الطلب */}
-  <div className="w-full max-w-2xl">
-    {/* Header */}
-    <div className="text-center mb-8">
-      <button
-        onClick={onBack}
-        className="inline-flex items-center text-gray-300 hover:text-white mb-6 transition-colors"
-      >
-        <ArrowRight className="w-5 h-5 ml-2" />
-        العودة للصفحة الرئيسية
-      </button>
-
-      <h2 className="text-3xl font-bold text-white mb-2">نموذج الطلب</h2>
-      <p className="text-gray-300">املأ البيانات المطلوبة لإتمام طلبك</p>
-    </div>
-
-    {/* Form */}
-    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-2xl">
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {/* الاسم */}
-        <div>
-          <label className="block text-white font-semibold mb-2">
-            الاسم الثلاثي * (اكتب اسمك الحقيقي فقط)
-          </label>
-          <input
-            type="text"
-            value={formData.fullName}
-            onChange={(e) => {
-              const regex = /^[\u0600-\u06FFa-zA-Z\s]*$/;
-              if (regex.test(e.target.value)) {
-                setFormData({ ...formData, fullName: e.target.value });
-              } else {
-                toast.error("يرجى كتابة الاسم الحقيقي بدون أرقام أو رموز");
-              }
-            }}
-            className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
-            placeholder="أدخل اسمك الثلاثي"
-            required
-          />
-          <p className="text-red-400 text-sm mt-1">
-            إذا لم يكن الاسم حقيقي، لن يتم تسليم المشروع.  
-            أي كلام كذبي أو تجارب غير حقيقية سيتم إبلاغ المرشد الطلابي والوكيل.
-          </p>
-        </div>
-
-        {/* الصف */}
-        <div>
-          <label className="block text-white font-semibold mb-2">الصف الدراسي *</label>
-          <select
-            value={formData.grade}
-            onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
-            required
+    <div className="min-h-screen flex items-center justify-center p-6">
+      <div className="w-full max-w-2xl">
+        
+        {/* Header */}
+        <div className="text-center mb-8">
+          <button
+            onClick={onBack}
+            className="inline-flex items-center text-gray-300 hover:text-white mb-6 transition-colors"
           >
-            <option value="" className="bg-gray-800">اختر الصف</option>
-            {grades.map((grade) => (
-              <option key={grade} value={grade} className="bg-gray-800">{grade}</option>
-            ))}
-          </select>
+            <ArrowRight className="w-5 h-5 ml-2" />
+            العودة للصفحة الرئيسية
+          </button>
+
+          <h2 className="text-3xl font-bold text-white mb-2">نموذج الطلب</h2>
+          <p className="text-gray-300">املأ البيانات المطلوبة لإتمام طلبك</p>
         </div>
 
-        {/* نوع الخدمة */}
-        <div>
-          <label className="block text-white font-semibold mb-2">نوع الخدمة *</label>
+        {/* Form */}
+        <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-2xl">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* الاسم */}
+            <div>
+              <label className="block text-white font-semibold mb-2">
+                الاسم الثلاثي * (اكتب اسمك الحقيقي فقط)
+              </label>
+              <input
+                type="text"
+                value={formData.fullName}
+                onChange={(e) => {
+                  const regex = /^[\u0600-\u06FFa-zA-Z\s]*$/;
+                  if (regex.test(e.target.value)) {
+                    setFormData({ ...formData, fullName: e.target.value });
+                  } else {
+                    toast.error("يرجى كتابة الاسم الحقيقي بدون أرقام أو رموز");
+                  }
+                }}
+                className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
+                placeholder="أدخل اسمك الثلاثي"
+                required
+              />
+              <p className="text-red-400 text-sm mt-1">
+                إذا لم يكن الاسم حقيقي، لن يتم تسليم المشروع.  
+                أي كلام كذبي أو تجارب غير حقيقية سيتم إبلاغ المرشد الطلابي والوكيل.
+              </p>
+            </div>
+
+            {/* الصف */}
+            <div>
+              <label className="block text-white font-semibold mb-2">الصف الدراسي *</label>
+              <select
+                value={formData.grade}
+                onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
+                className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
+                required
+              >
+                <option value="" className="bg-gray-800">اختر الصف</option>
+                {grades.map((grade) => (
+                  <option key={grade} value={grade} className="bg-gray-800">{grade}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* نوع الخدمة */}
+            <div>
+              <label className="block text-white font-semibold mb-2">نوع الخدمة *</label>
 <select
   value={formData.serviceType}
   onChange={(e) => {
