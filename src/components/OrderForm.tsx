@@ -447,6 +447,25 @@ ${phoneNumber && isPhoneValid ? `رقم الهاتف: ${phoneNumber}` : ""}
 
         {/* Form */}
         <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-2xl">
+        <div className="w-full max-w-2xl">
+  {/* Header */}
+  <div className="text-center mb-8">
+    ...
+  </div>
+
+  {/* ← ضع كود جدول الأسعار هنا مباشرة */}
+  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mb-6 max-w-2xl mx-auto">
+    ... جدول الأسعار كامل ...
+  </div>
+
+  {/* Form */}
+  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 shadow-2xl">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      ...
+    </form>
+  </div>
+</div>
+
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* الاسم */}
             <div>
