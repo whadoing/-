@@ -67,6 +67,31 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
   <p className="text-yellow-400 text-xl font-bold mb-4 drop-shadow-lg">
     أسعارنا أرخص من المكاتب 🔥
   </p>
+  {/* ← ضع هنا جدول الأسعار */}
+  <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20 mb-4">
+    <h4 className="text-white font-semibold mb-2 text-lg text-center">الأسعار قبل وبعد الخصم</h4>
+    <table className="w-full text-white text-center border-collapse">
+      <thead>
+        <tr className="border-b border-white/20">
+          <th className="py-2">عدد الصفحات</th>
+          <th className="py-2">السعر قبل الخصم</th>
+          <th className="py-2">السعر بعد الخصم</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr className="border-b border-white/20"><td>1</td><td>1.5</td><td>1</td></tr>
+        <tr className="border-b border-white/20"><td>2</td><td>2</td><td>1</td></tr>
+        <tr className="border-b border-white/20"><td>3</td><td>2</td><td>1</td></tr>
+        <tr className="border-b border-white/20"><td>5</td><td>4</td><td>2</td></tr>
+        <tr className="border-b border-white/20"><td>10</td><td>5</td><td>3</td></tr>
+        <tr className="border-b border-white/20"><td>20</td><td>8</td><td>6</td></tr>
+        <tr className="border-b border-white/20"><td>30</td><td>15</td><td>12</td></tr>
+        <tr className="border-b border-white/20"><td>40</td><td>20</td><td>16</td></tr>
+        <tr className="border-b border-white/20"><td>50</td><td>25</td><td>20</td></tr>
+        <tr className="border-b border-white/20"><td>60</td><td>30</td><td>25</td></tr>
+      </tbody>
+    </table>
+  </div>
 
   <button
     onClick={onStartOrder}
