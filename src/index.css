@@ -36,7 +36,7 @@ body {
 }
 
 .glow-button:hover {
-  box-shadow: 0 0 35px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.716);
   transform: scale(1.03);
 }
 
