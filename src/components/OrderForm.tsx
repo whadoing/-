@@ -288,13 +288,18 @@ const sendOrderImage = async (
 ) => {
   const width = 736;
   const height = 460;
-  const lineHeight = 40;
+  const lineHeight = 45;
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext("2d")!;
-  
+
+  // دقة عالية
+  canvas.width = width * 2;
+  canvas.height = height * 2;
+  ctx.scale(2, 2);
+
   const bg = new Image();
   bg.crossOrigin = "anonymous";
   bg.src = "https://i.ibb.co/20fg3K0w/6ed37789e0257df80630195d70ac4415.jpg";
@@ -302,13 +307,10 @@ const sendOrderImage = async (
   bg.onload = () => {
     ctx.drawImage(bg, 0, 0, width, height);
 
-    ctx.font = "bold 24px Arial";
-    ctx.textAlign = "left";
+    ctx.textAlign = "center";
     ctx.textBaseline = "top";
-
+    ctx.font = "bold 28px 'Arial'"; // غيّر الخط حسب موقعك
     ctx.fillStyle = "#FFFFFF";
-    ctx.shadowColor = "#00FFFF"; // لون التوهج
-    ctx.shadowBlur = 15;
 
     const lines: { label: string; value: string }[] = [
       { label: "رقم الطلب: ", value: orderId.slice(0, 8) },
@@ -326,9 +328,21 @@ const sendOrderImage = async (
     lines.push({ label: "وقت التسليم: ", value: deliveryLabel });
     lines.push({ label: "السعر: ", value: price + " ريال" });
 
-    let startY = 20;
+    // بداية رسم النص من منتصف الصورة عموديًا تقريبًا
+    let startY = height / 2 - (lines.length * lineHeight) / 2;
+
     lines.forEach(line => {
-      ctx.fillText(line.label + line.value, 20, startY);
+      // النص العادي (الليبل)
+      ctx.fillStyle = "#FFFFFF";
+      ctx.shadowBlur = 0;
+      ctx.fillText(line.label, width / 2, startY);
+
+      // القيم مع glow
+      ctx.fillStyle = "#FFFFFF";
+      ctx.shadowColor = "#8A2BE2"; // أرجواني
+      ctx.shadowBlur = 15;
+      ctx.fillText(line.value, width / 2 + ctx.measureText(line.label).width / 2, startY);
+
       startY += lineHeight;
     });
 
@@ -337,6 +351,7 @@ const sendOrderImage = async (
 
   bg.onerror = () => callback(null);
 };
+
 
 
 
