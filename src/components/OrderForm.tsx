@@ -47,8 +47,6 @@ const [orderLink, setOrderLink] = useState(""); // يخزن تفاصيل الط�
   const [isSubmitting, setIsSubmitting] = useState(false);
 const [cart, setCart] = useState<{ id: string; name: string; price: number; image?: string }[]>([]);
 const totalPrice = price + cart.reduce((sum, item) => sum + item.price, 0);
-const [showShoppingModal, setShowShoppingModal] = useState(false);
-
 
   // 🔹 هنا تحطهم
   
@@ -169,10 +167,7 @@ const calculatePrice = (serviceType: string, file?: File, pageCount?: number) =>
   setFormData({ ...formData, serviceType });
   setDeliveryTime("");
 
-  if (serviceType === "shopping") {
-    setShowShoppingModal(true); // ← هذا يفتح نافذة التسوق
-    setPrice(cart.reduce((sum, item) => sum + item.price, 0)); // حساب السعر الإجمالي للسلة
-  } else if (serviceType !== "print") {
+  if (serviceType !== "print") {
     setFileInfo(null);
     const newPrice = calculatePrice(serviceType);
     setPrice(newPrice);
@@ -180,7 +175,6 @@ const calculatePrice = (serviceType: string, file?: File, pageCount?: number) =>
     setPrice(0);
   }
 };
-
 
 // ===== خدمة النص كصورة مع التحكم في الخط واللون =====
 // ===== إرسال النص كصورة باستخدام Canvas مع Glow =====
@@ -566,16 +560,8 @@ ${note ? `ملاحظات: ${note}` : ""}
   value={formData.serviceType}
   onChange={(e) => {
     const value = e.target.value;
-
-    if (value === "shopping") {
-      setShowShoppingModal(true); // فتح نافذة التسوق
-      return;
-    }
-
-
     // منع اختيار الخدمات القادمة
     if (value === "summary" || value === "book_summary") return;
-
     handleServiceChange(value);
   }}
   className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
@@ -682,23 +668,6 @@ ${note ? `ملاحظات: ${note}` : ""}
             )}
 
             {/* خانة اختيار وقت التسليم */}
-            {formData.serviceType && (
-  <div className="mb-4">
-    <label className="block text-white font-semibold mb-2">وقت التسليم *</label>
-    <select
-      value={deliveryTime}
-      onChange={(e) => setDeliveryTime(e.target.value)}
-      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
-      required
-    >
-      <option value="">اختر وقت التسليم</option>
-      <option value="morning">بداية الدوام</option>
-      <option value="break">وقت الفسحة</option>
-      <option value="any">في أي وقت</option>
-    </select>
-  </div>
-)}
-
 {formData.serviceType && (
   <>
     {/* حقل الرقم السعودي (اختياري) */}
@@ -766,6 +735,52 @@ ${note ? `ملاحظات: ${note}` : ""}
 
 
     </div>
+
+{/* حقل الرقم السعودي (اختياري) */}
+<div className="mb-4">
+  <label className="block text-white font-semibold mb-2">
+    رقمك للتواصل (اختياري)
+  </label>
+  <div className="flex rounded-xl overflow-hidden border border-white/20">
+    {/* رمز السعودية +966 */}
+    <span className="flex items-center justify-center bg-gray-700 text-white px-3">
+      🇸🇦 +966
+    </span>
+
+    {/* خانة الرقم */}
+    <input
+      type="tel"
+      value={phoneNumber}
+      onChange={(e) => {
+        const val = e.target.value.replace(/\D/g, "");
+        setPhoneNumber(val);
+
+        if (val.length === 9 && val.startsWith("5")) {
+          setIsPhoneValid(true);
+        } else {
+          setIsPhoneValid(false);
+        }
+      }}
+      placeholder="أدخل رقم جوالك يبدأ بـ5"
+      className={`flex-1 px-4 py-3 rounded-xl outline-none transition-all text-black
+        ${phoneNumber.length === 0 
+          ? "border border-white/20 focus:ring-2 focus:ring-blue-400/30 bg-white/10"
+          : isPhoneValid
+          ? "border-2 border-green-500 focus:ring-2 focus:ring-green-400/50 bg-green-50"
+          : "border-2 border-red-500 focus:ring-2 focus:ring-red-400/50 bg-red-50"
+        }
+      `}
+    />
+  </div>
+
+  {/* رسالة التحقق */}
+  {phoneNumber.length > 0 && (
+    <p className={`text-sm mt-1 ${isPhoneValid ? "text-green-400" : "text-red-400"}`}>
+      {isPhoneValid ? "الرقم صحيح" : "الرقم غير صالح! يجب أن يبدأ بـ5 ويتكون من 9 أرقام."}
+    </p>
+  )}
+</div>
+
 {/* حقل الملاحظات */}
 {formData.serviceType === "print" && (
   <div>
