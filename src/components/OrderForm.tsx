@@ -493,17 +493,17 @@ ${note ? `ملاحظات: ${note}` : ""}
             {/* الصف */}
             <div>
               <label className="block text-white font-semibold mb-2">الصف الدراسي *</label>
-              <select
-                value={formData.grade}
-                onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
-                required
-              >
-                <option value="" className="bg-gray-800">اختر الصف</option>
-                {grades.map((grade) => (
-                  <option key={grade} value={grade} className="bg-gray-800">{grade}</option>
-                ))}
-              </select>
+<select
+  value={formData.grade}
+  onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
+  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white font-sans focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all appearance-none"
+  required
+>
+  <option value="" className="bg-gray-800">اختر الصف</option>
+  {grades.map((grade) => (
+    <option key={grade} value={grade} className="bg-gray-800">{grade}</option>
+  ))}
+</select>
             </div>
 
             {/* نوع الخدمة */}
@@ -555,17 +555,15 @@ ${note ? `ملاحظات: ${note}` : ""}
   value={formData.serviceType}
   onChange={(e) => {
     const value = e.target.value;
-    // منع اختيار الخدمات القادمة
     if (value === "summary" || value === "book_summary") return;
     handleServiceChange(value);
   }}
-  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
+  className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white font-sans focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all appearance-none"
   required
 >
   <option value="" className="bg-gray-800">اختر نوع الخدمة</option>
   <option value="print" className="bg-gray-800">طباعة ملف</option>
   <option value="shopping" className="bg-gray-800">التسوق</option>
-
   <option value="summary" disabled className="bg-gray-800 text-gray-400">ملخص وحدة (قريباً)</option>
   <option value="book_summary" disabled className="bg-gray-800 text-gray-400">ملخص كتاب كامل (قريباً)</option>
 </select>
