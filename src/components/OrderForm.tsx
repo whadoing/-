@@ -283,11 +283,11 @@ const sendOrderImage = async (
   fileInfo: FileInfo | null,
   deliveryTime: string,
   price: number,
-  orderId: string, // ← أضف هذا
+  orderId: string,
   callback: (blob: Blob | null) => void
 ) => {
-  const width = 736;
-  const height = 552;
+  const width = 736;  // ← نفس اللي عطيتك
+  const height = 460; // ← الجديد
   const padding = 40;
 
   const canvas = document.createElement("canvas");
@@ -297,7 +297,7 @@ const sendOrderImage = async (
 
   const bg = new Image();
   bg.crossOrigin = "anonymous";
-  bg.src = "https://i.ibb.co/Y7QbF58C/gikoneko-wallpaper.jpg";
+  bg.src = "https://i.ibb.co/V0P2YB0d"; // ← الرابط الجديد
 
   bg.onload = () => {
     ctx.drawImage(bg, 0, 0, width, height);
@@ -309,10 +309,10 @@ const sendOrderImage = async (
     const labelColor = "#FFFFFF";
     const valueColor = "#FF4C4C";
     const strokeColor = "#C8E4FF";
-    const lineHeight = 60;
+    const lineHeight = 50; // ← قللت شوي عشان يناسب الارتفاع الجديد
 
     const lines: { label: string; value: string }[] = [
-      { label: "رقم الطلب:", value: orderId.slice(0, 8) }, // ← هنا رقم الطلب
+      { label: "رقم الطلب:", value: orderId.slice(0, 8) },
       { label: "اسم الطالب:", value: formData.fullName },
       { label: "الصف الدراسي:", value: formData.grade },
       { label: "نوع الخدمة:", value: formData.serviceType === "print" ? "طباعة ملف" : formData.serviceType === "summary" ? "ملخص وحدة" : "ملخص كتاب" },
@@ -353,6 +353,7 @@ const sendOrderImage = async (
 
   bg.onerror = () => callback(null);
 };
+
 
 
 
