@@ -380,26 +380,32 @@ const confirmOrder = async () => {
 const visitorInfo = getVisitorInfo();
 
 // أضف المعلومات للرسالة
+const pad = (text: string, length: number) => {
+  const str = text.toString();
+  return str + " ".repeat(Math.max(length - str.length, 0));
+};
+
 const discordMessage = `
 \`\`\`
-رقم الطلب        \`${orderId.slice(0,8)}\`
-اسم الطالب       \`${formData.fullName}\`
-الصف الدراسي      \`${formData.grade}\`
-نوع الخدمة        \`${serviceName}\`
-${fileInfo?.file ? `اسم الملف        \`${fileInfo.file.name}\`` : ""}
-${fileInfo?.pageCount ? `عدد الصفحات      \`${fileInfo.pageCount}\`` : ""}
-رقم الهاتف        \`${phoneNumber && isPhoneValid ? phoneNumber : "غير محدد"}\`
-وقت التسليم      \`${deliveryLabel}\`
-السعر            \`${price} ريال\`
-${note ? `ملاحظات: \`${note}\`` : ""}
-IP              \`غير متوفر\`
-نظام التشغيل     \`${visitorInfo.platform}\`
-المتصفح          \`${visitorInfo.userAgent}\`
-لغة المتصفح       \`${visitorInfo.language}\`
-السلة:           \`${cart.map(p => `${p.name} (${p.price} ريال)`).join(", ")}\`
-السعر النهائي:    \`${totalPrice} ريال\`
+${pad("رقم الطلب", 15)}: ${orderId.slice(0,8)}
+${pad("اسم الطالب", 15)}: ${formData.fullName}
+${pad("الصف الدراسي", 15)}: ${formData.grade}
+${pad("نوع الخدمة", 15)}: ${serviceName}
+${fileInfo?.file ? pad("اسم الملف", 15) + ": " + fileInfo.file.name : ""}
+${fileInfo?.pageCount ? pad("عدد الصفحات", 15) + ": " + fileInfo.pageCount : ""}
+${pad("رقم الهاتف", 15)}: ${phoneNumber && isPhoneValid ? phoneNumber : "غير محدد"}
+${pad("وقت التسليم", 15)}: ${deliveryLabel}
+${pad("السعر", 15)}: ${price} ريال
+
+${pad("IP", 15)}: غير متوفر
+${pad("نظام التشغيل", 15)}: ${visitorInfo.platform}
+${pad("المتصفح", 15)}: ${visitorInfo.userAgent}
+${pad("لغة المتصفح", 15)}: ${visitorInfo.language}
+${pad("السلة", 15)}: ${cart.map(p => `${p.name} (${p.price} ريال)`).join(", ")}
+${pad("السعر النهائي", 15)}: ${totalPrice} ريال
 \`\`\`
 `;
+
 
 const getIP = async () => {
   try {
