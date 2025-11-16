@@ -682,6 +682,23 @@ ${note ? `ملاحظات: ${note}` : ""}
             )}
 
             {/* خانة اختيار وقت التسليم */}
+            {formData.serviceType && (
+  <div className="mb-4">
+    <label className="block text-white font-semibold mb-2">وقت التسليم *</label>
+    <select
+      value={deliveryTime}
+      onChange={(e) => setDeliveryTime(e.target.value)}
+      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
+      required
+    >
+      <option value="">اختر وقت التسليم</option>
+      <option value="morning">بداية الدوام</option>
+      <option value="break">وقت الفسحة</option>
+      <option value="any">في أي وقت</option>
+    </select>
+  </div>
+)}
+
 {formData.serviceType && (
   <>
     {/* حقل الرقم السعودي (اختياري) */}
@@ -728,6 +745,25 @@ ${note ? `ملاحظات: ${note}` : ""}
     {isPhoneValid ? "الرقم صحيح" : "الرقم غير صالح! يجب أن يبدأ بـ5 ويتكون من 9 أرقام."}
   </p>
 )}
+{/* حقل الملاحظات */}
+{formData.serviceType === "print" && (
+  <div>
+    <label className="block text-white font-semibold mb-2">
+      ملاحظات إضافية
+    </label>
+    <textarea
+      value={note}
+      onChange={(e) => {
+        if (e.target.value.length <= 200) setNote(e.target.value);
+      }}
+      placeholder="اكتب ملاحظتك للطلب"
+      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
+      rows={3}
+    />
+    <p className="text-gray-400 text-sm mt-1">{note.length}/200</p>
+  </div>
+)}
+
 
     </div>
 {/* حقل الملاحظات */}
