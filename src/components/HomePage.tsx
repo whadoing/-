@@ -112,11 +112,12 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
 <div className="flex flex-col items-center justify-center w-full md:w-2/3">
   <button
     onClick={handleStartOrder}
-    className="button-primary glow-button text-xl w-full md:w-auto px-6 py-4"
+    className="button-secondary glow-button text-xl w-full md:w-auto px-6 py-4"
   >
     ابدأ الطلب الآن
   </button>
 </div>
+
         </div>
 
         {/* Working Hours + Contact */}
