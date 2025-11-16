@@ -33,20 +33,33 @@ export default function OrderForm({ onBack }: OrderFormProps) {
     grade: "",
     serviceType: "",
   });
-  const [dragPosition, setDragPosition] = useState<{ x: number; y: number } | null>(null)
+  const [dragPosition, setDragPosition] = useState<{ x: number; y: number } | null>(null);
   const [phoneNumber, setPhoneNumber] = useState(""); 
   const [isPhoneValid, setIsPhoneValid] = useState(true); 
   const [note, setNote] = useState(""); // الملاحظات
-  const [isDragging, setIsDragging] = useState(false); // لتتبع السحب على الـ drop zon
+  const [isDragging, setIsDragging] = useState(false); // لتتبع السحب على الـ drop zone
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
   const [price, setPrice] = useState(0);
   const [deliveryTime, setDeliveryTime] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [showCopyModal, setShowCopyModal] = useState(false); // واجهة نسخ الرابط بعد الطلب
-const [orderLink, setOrderLink] = useState(""); // يخزن تفاصيل الطل
+  const [orderLink, setOrderLink] = useState(""); // يخزن تفاصيل الطلب
   const [isSubmitting, setIsSubmitting] = useState(false);
-const [cart, setCart] = useState<{ id: string; name: string; price: number; image?: string }[]>([]);
-const totalPrice = price + cart.reduce((sum, item) => sum + item.price, 0);
+  const [cart, setCart] = useState<{ id: string; name: string; price: number; image?: string }[]>([]);
+  const totalPrice = price + cart.reduce((sum, item) => sum + item.price, 0);
+
+  // ✅ تحقق من صلاحية جميع الحقول قبل تفعيل الزر
+  const isFormValid =
+    formData.fullName &&
+    formData.grade &&
+    formData.serviceType &&
+    ((formData.serviceType === "print" && fileInfo) || formData.serviceType !== "print") &&
+    phoneNumber &&
+    isPhoneValid &&
+    deliveryTime &&
+    price > 0;
+
+  // باقي الكود (مثل handleSubmit و confirmOrder و JSX) يأتي بعد هذا
 
   // 🔹 هنا تحطهم
   
@@ -770,13 +783,13 @@ ${note ? `ملاحظات: ${note}` : ""}
 )}
 
             {/* زر الإرسال */}
-            <button
-              type="submit"
-              disabled={!isWorkingHours() || price === 0}
-              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:from-gray-600 disabled:to-gray-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed"
-            >
-              {!isWorkingHours() ? "الخدمة مغلقة الآن" : "إرسال الطلب"}
-            </button>
+<button
+  type="submit"
+  disabled={!isWorkingHours() || !isFormValid}
+  className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:from-gray-600 disabled:to-gray-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed"
+>
+  {!isWorkingHours() ? "الخدمة مغلقة الآن" : "إرسال الطلب"}
+</button>
           </form>
         </div>
       </div>
