@@ -14,12 +14,11 @@ interface ConfirmationModalProps {
   deliveryTime: string;
   phoneNumber: string;
   isPhoneValid: boolean;
-  note?: string; // ← أضف هذا
+  note?: string;
   onConfirm: () => void;
   onCancel: () => void;
   isSubmitting: boolean;
 }
-
 
 export default function ConfirmationModal({
   formData,
@@ -28,12 +27,10 @@ export default function ConfirmationModal({
   deliveryTime,
   phoneNumber,
   isPhoneValid,
-  note,           // ← أضف هذا السطر
   onConfirm,
   onCancel,
   isSubmitting
 }: ConfirmationModalProps) {
-
 
   const [countdown, setCountdown] = useState(5);
   const [canConfirm, setCanConfirm] = useState(false);
@@ -61,6 +58,36 @@ export default function ConfirmationModal({
       default: return serviceType;
     }
   };
+
+  //  ⬇️⬇️ إضافة رسالة واتساب هنا قبل الـ return  ⬇️⬇️
+  const whatsappNumber = "96650XXXXXXX"; // رقمك بدون +
+  
+  const message =
+`تأكيد طلب جديد
+
+رقم الطلب:
+${formData.orderId ? formData.orderId.slice(0, 8) : "غير متوفر"}
+
+الاسم:
+${formData.fullName}
+
+الصف:
+${formData.grade}
+
+نوع الخدمة:
+${getServiceLabel(formData.serviceType)}
+
+السعر:
+${price} ريال
+`;
+
+  const whatsappUrl =
+    "https://wa.me/" +
+    whatsappNumber +
+    "?text=" +
+    encodeURIComponent(message);
+  //  ⬆️⬆️ نهاية إضافة رسالة واتساب  ⬆️⬆️
+
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
@@ -90,14 +117,7 @@ export default function ConfirmationModal({
               {phoneNumber && isPhoneValid ? phoneNumber : "غير محدد"}
             </span>
           </div>
-          {/* ملاحظات إضافية */}
-{note && (
-  <div className="flex justify-between items-center py-2 border-b border-white/20">
-    <span className="text-gray-300">ملاحظات:</span>
-    <span className="text-white font-semibold">{note}</span>
-  </div>
-)}
-
+          
           {fileInfo && (
             <div className="py-2 border-b border-white/20">
               <div className="flex items-center space-x-3 space-x-reverse">
@@ -178,6 +198,16 @@ export default function ConfirmationModal({
             )}
           </button>
         </div>
+
+        {/* زر واتساب */}
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block mt-4 w-full text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition"
+        >
+          إرسال التأكيد عبر واتساب
+        </a>
       </div>
     </div>
   );
