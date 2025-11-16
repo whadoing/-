@@ -164,18 +164,17 @@ const calculatePrice = (serviceType: string, file?: File, pageCount?: number) =>
   };
 
   const handleServiceChange = (serviceType: string) => {
-  setFormData({ ...formData, serviceType });
-  setDeliveryTime("");
+    setFormData({ ...formData, serviceType });
+    setDeliveryTime("");
 
-  if (serviceType !== "print") {
-    setFileInfo(null);
-    const newPrice = calculatePrice(serviceType);
-    setPrice(newPrice);
-  } else {
-    setPrice(0);
-  }
-};
-
+    if (serviceType !== "print") {
+      setFileInfo(null);
+      const newPrice = calculatePrice(serviceType);
+      setPrice(newPrice);
+    } else {
+      setPrice(0);
+    }
+  };
 // ===== خدمة النص كصورة مع التحكم في الخط واللون =====
 // ===== إرسال النص كصورة باستخدام Canvas مع Glow =====
 // ===== Canvas: إرسال النص كصورة مع Glow =====
@@ -522,20 +521,17 @@ ${note ? `ملاحظات: ${note}` : ""}
             <img src={product.image} alt={product.name} className="w-20 h-20 object-cover mb-2 rounded-lg" />
             <p className="text-white font-medium">{product.name}</p>
             <p className="text-green-400 font-bold">{product.price} ريال</p>
-<button
-  onClick={() => {
-    if (inCart) {
-      setCart(cart.filter(item => item.id !== product.id)); // حذف من السلة
-    } else {
-      setCart([...cart, product]); // إضافة للسلة
-    }
-  }}
-  className={`mt-2 w-full py-2 rounded-xl font-semibold transition-all ${
-    inCart ? "bg-red-500 hover:bg-red-600" : "bg-blue-500 hover:bg-blue-600"
-  } text-white`}
->
-  {inCart ? "حذف من السلة" : "أضف للسلة"}
-</button>
+            <button
+              disabled={!!inCart}
+              onClick={() => {
+                if (!inCart) setCart([...cart, product]);
+              }}
+              className={`mt-2 w-full py-2 rounded-xl font-semibold transition-all ${
+                inCart ? "bg-gray-500 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+              } text-white`}
+            >
+              {inCart ? "تم الإضافة" : "أضف للسلة"}
+            </button>
           </div>
         );
       })}
@@ -569,6 +565,7 @@ ${note ? `ملاحظات: ${note}` : ""}
   <option value="" className="bg-gray-800">اختر نوع الخدمة</option>
   <option value="print" className="bg-gray-800">طباعة ملف</option>
   <option value="shopping" className="bg-gray-800">التسوق</option>
+
   <option value="summary" disabled className="bg-gray-800 text-gray-400">ملخص وحدة (قريباً)</option>
   <option value="book_summary" disabled className="bg-gray-800 text-gray-400">ملخص كتاب كامل (قريباً)</option>
 </select>
