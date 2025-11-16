@@ -170,8 +170,8 @@ const calculatePrice = (serviceType: string, file?: File, pageCount?: number) =>
   setDeliveryTime("");
 
   if (serviceType === "shopping") {
-    setShowShoppingModal(true);
-    setPrice(cart.reduce((sum, item) => sum + item.price, 0));
+    setShowShoppingModal(true); // ← هذا يفتح نافذة التسوق
+    setPrice(cart.reduce((sum, item) => sum + item.price, 0)); // حساب السعر الإجمالي للسلة
   } else if (serviceType !== "print") {
     setFileInfo(null);
     const newPrice = calculatePrice(serviceType);
@@ -180,7 +180,6 @@ const calculatePrice = (serviceType: string, file?: File, pageCount?: number) =>
     setPrice(0);
   }
 };
-
 
 
 // ===== خدمة النص كصورة مع التحكم في الخط واللون =====
@@ -572,46 +571,6 @@ ${note ? `ملاحظات: ${note}` : ""}
       setShowShoppingModal(true); // فتح نافذة التسوق
       return;
     }
-{showShoppingModal && (
-  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 max-w-3xl w-full border border-white/20 shadow-2xl">
-      <h3 className="text-2xl font-bold text-white mb-4 text-center">منتجات التسوق</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-4">
-        {products.map((product) => {
-          const inCart = cart.find((item) => item.id === product.id);
-          return (
-            <div key={product.id} className="bg-white/10 rounded-xl p-4 flex flex-col items-center border border-white/20">
-              <img src={product.image} alt={product.name} className="w-20 h-20 object-cover mb-2 rounded-lg" />
-              <p className="text-white font-medium">{product.name}</p>
-              <p className="text-green-400 font-bold">{product.price} ريال</p>
-              <button
-                onClick={() => {
-                  if (inCart) setCart(cart.filter(item => item.id !== product.id));
-                  else setCart([...cart, product]);
-                }}
-                className={`mt-2 w-full py-2 rounded-xl font-semibold transition-all ${inCart ? "bg-red-500 hover:bg-red-600" : "bg-blue-500 hover:bg-blue-600"} text-white`}
-              >
-                {inCart ? "حذف من السلة" : "أضف للسلة"}
-              </button>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="flex justify-between items-center">
-        <span className="text-white font-semibold text-lg">
-          السعر الإجمالي للسلة: <span className="text-green-400 font-bold">{cart.reduce((sum, item) => sum + item.price, 0)} ريال</span>
-        </span>
-        <button
-          onClick={() => setShowShoppingModal(false)}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold px-4 py-2 rounded-xl transition-all"
-        >
-          تم
-        </button>
-      </div>
-    </div>
-  </div>
-)}
 
 
     // منع اختيار الخدمات القادمة
@@ -769,73 +728,8 @@ ${note ? `ملاحظات: ${note}` : ""}
     {isPhoneValid ? "الرقم صحيح" : "الرقم غير صالح! يجب أن يبدأ بـ5 ويتكون من 9 أرقام."}
   </p>
 )}
-{/* حقل الملاحظات */}
-{formData.serviceType === "print" && (
-  <div>
-    <label className="block text-white font-semibold mb-2">
-      ملاحظات إضافية
-    </label>
-    <textarea
-      value={note}
-      onChange={(e) => {
-        if (e.target.value.length <= 200) setNote(e.target.value);
-      }}
-      placeholder="اكتب ملاحظتك للطلب"
-      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
-      rows={3}
-    />
-    <p className="text-gray-400 text-sm mt-1">{note.length}/200</p>
-  </div>
-)}
-
 
     </div>
-
-{/* حقل الرقم السعودي (اختياري) */}
-<div className="mb-4">
-  <label className="block text-white font-semibold mb-2">
-    رقمك للتواصل (اختياري)
-  </label>
-  <div className="flex rounded-xl overflow-hidden border border-white/20">
-    {/* رمز السعودية +966 */}
-    <span className="flex items-center justify-center bg-gray-700 text-white px-3">
-      🇸🇦 +966
-    </span>
-
-    {/* خانة الرقم */}
-    <input
-      type="tel"
-      value={phoneNumber}
-      onChange={(e) => {
-        const val = e.target.value.replace(/\D/g, "");
-        setPhoneNumber(val);
-
-        if (val.length === 9 && val.startsWith("5")) {
-          setIsPhoneValid(true);
-        } else {
-          setIsPhoneValid(false);
-        }
-      }}
-      placeholder="أدخل رقم جوالك يبدأ بـ5"
-      className={`flex-1 px-4 py-3 rounded-xl outline-none transition-all text-black
-        ${phoneNumber.length === 0 
-          ? "border border-white/20 focus:ring-2 focus:ring-blue-400/30 bg-white/10"
-          : isPhoneValid
-          ? "border-2 border-green-500 focus:ring-2 focus:ring-green-400/50 bg-green-50"
-          : "border-2 border-red-500 focus:ring-2 focus:ring-red-400/50 bg-red-50"
-        }
-      `}
-    />
-  </div>
-
-  {/* رسالة التحقق */}
-  {phoneNumber.length > 0 && (
-    <p className={`text-sm mt-1 ${isPhoneValid ? "text-green-400" : "text-red-400"}`}>
-      {isPhoneValid ? "الرقم صحيح" : "الرقم غير صالح! يجب أن يبدأ بـ5 ويتكون من 9 أرقام."}
-    </p>
-  )}
-</div>
-
 {/* حقل الملاحظات */}
 {formData.serviceType === "print" && (
   <div>
