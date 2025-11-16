@@ -327,20 +327,21 @@ const sendOrderImage = async (
     // بداية رسم النص من منتصف الصورة عموديًا
     let startY = height / 2 - (lines.length * lineHeight) / 2;
 
-    lines.forEach(line => {
-      // Label باللون الأبيض بدون Glow
-      ctx.fillStyle = "#FFFFFF";
-      ctx.shadowBlur = 0;
-      ctx.fillText(line.label, width / 2, startY);
+lines.forEach(line => {
+  // Label باللون الأبيض بدون Glow
+  ctx.fillStyle = "#FFFFFF";
+  ctx.shadowBlur = 0;
+  ctx.fillText(line.label, width / 2, startY);
 
-      // Value باللون الأبيض مع Glow أرجواني
-      ctx.fillStyle = "#FFFFFF";
-      ctx.shadowColor = "#8A2BE2"; // أرجواني
-      ctx.shadowBlur = 15;
-      ctx.fillText(line.value, width / 2 + ctx.measureText(line.label).width / 2, startY);
+  // Value باللون الأبيض مع Glow أرجواني، أسفل Label
+  ctx.fillStyle = "#FFFFFF";
+  ctx.shadowColor = "#8A2BE2"; // أرجواني
+  ctx.shadowBlur = 15;
+  ctx.fillText(line.value, width / 2, startY + 30); // 30px أسفل Label
 
-      startY += lineHeight;
-    });
+  // زيادة startY للسطر التالي
+  startY += lineHeight + 30; // ارتفاع كل سطر + مسافة بين Label و Value
+});
 
     canvas.toBlob(callback, "image/png");
   };
