@@ -286,65 +286,49 @@ const sendOrderImage = async (
   orderId: string,
   callback: (blob: Blob | null) => void
 ) => {
-  const width = 736;  // ← نفس اللي عطيتك
-  const height = 460; // ← الجديد
-  const padding = 40;
+  const width = 736;
+  const height = 460;
+  const lineHeight = 40;
 
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext("2d")!;
-
+  
   const bg = new Image();
   bg.crossOrigin = "anonymous";
-bg.src = "https://i.ibb.co/20fg3K0w/6ed37789e0257df80630195d70ac4415.jpg";
+  bg.src = "https://i.ibb.co/20fg3K0w/6ed37789e0257df80630195d70ac4415.jpg";
 
   bg.onload = () => {
     ctx.drawImage(bg, 0, 0, width, height);
 
-    ctx.font = "bold 36px 'Cairo', sans-serif";
-    ctx.textAlign = "center";
+    ctx.font = "bold 24px Arial";
+    ctx.textAlign = "left";
     ctx.textBaseline = "top";
 
-    const labelColor = "#FFFFFF";
-    const valueColor = "#FF4C4C";
-    const strokeColor = "#C8E4FF";
-    const lineHeight = 50; // ← قللت شوي عشان يناسب الارتفاع الجديد
+    ctx.fillStyle = "#FFFFFF";
+    ctx.shadowColor = "#00FFFF"; // لون التوهج
+    ctx.shadowBlur = 15;
 
     const lines: { label: string; value: string }[] = [
-      { label: "رقم الطلب:", value: orderId.slice(0, 8) },
-      { label: "اسم الطالب:", value: formData.fullName },
-      { label: "الصف الدراسي:", value: formData.grade },
-      { label: "نوع الخدمة:", value: formData.serviceType === "print" ? "طباعة ملف" : formData.serviceType === "summary" ? "ملخص وحدة" : "ملخص كتاب" },
+      { label: "رقم الطلب: ", value: orderId.slice(0, 8) },
+      { label: "اسم الطالب: ", value: formData.fullName },
+      { label: "الصف الدراسي: ", value: formData.grade },
+      { label: "نوع الخدمة: ", value: formData.serviceType === "print" ? "طباعة ملف" : formData.serviceType === "summary" ? "ملخص وحدة" : "ملخص كتاب" },
     ];
 
-    if (fileInfo?.file) lines.push({ label: "اسم الملف:", value: fileInfo.file.name });
-    if (fileInfo?.pageCount) lines.push({ label: "عدد الصفحات:", value: fileInfo.pageCount.toString() });
+    if (fileInfo?.file) lines.push({ label: "اسم الملف: ", value: fileInfo.file.name });
 
     const deliveryLabel =
       deliveryTime === "morning" ? "بداية الدوام" :
       deliveryTime === "break" ? "وقت الفسحة" : "في أي وقت";
 
-    lines.push({ label: "رقم الهاتف:", value: phoneNumber && isPhoneValid ? phoneNumber : "غير محدد" });
-    lines.push({ label: "وقت التسليم:", value: deliveryLabel });
-    lines.push({ label: "السعر:", value: price + " ريال" });
+    lines.push({ label: "وقت التسليم: ", value: deliveryLabel });
+    lines.push({ label: "السعر: ", value: price + " ريال" });
 
-    const totalHeight = lines.length * lineHeight;
-    let startY = height / 2 - totalHeight / 2;
-
-    lines.forEach((line) => {
-      const fullText = line.label + " " + line.value;
-
-      ctx.lineWidth = 6;
-      ctx.strokeStyle = strokeColor;
-      ctx.strokeText(fullText, width / 2, startY);
-
-      ctx.fillStyle = labelColor;
-      ctx.fillText(line.label + " ", width / 2 - (ctx.measureText(line.value).width / 2), startY);
-
-      ctx.fillStyle = valueColor;
-      ctx.fillText(line.value, width / 2 + ctx.measureText(line.label + " ").width / 2, startY);
-
+    let startY = 20;
+    lines.forEach(line => {
+      ctx.fillText(line.label + line.value, 20, startY);
       startY += lineHeight;
     });
 
