@@ -15,33 +15,33 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
   };
 
   const confirmAgreement = () => {
-    // نحاول الحصول على الموقع
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const location = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          };
-          setShowAgreement(false);
-          setAgreed(false);
-          onStartOrder(location); // نرسل الطلب مع الموقع
-        },
-        (error) => {
-          console.warn("لم يتمكن من الحصول على الموقع:", error.message);
-          // نكمل الطلب بدون الموقع
-          setShowAgreement(false);
-          setAgreed(false);
-          onStartOrder();
-        }
-      );
-    } else {
-      console.warn("Geolocation غير مدعوم في هذا المتصفح");
-      setShowAgreement(false);
-      setAgreed(false);
-      onStartOrder();
-    }
-  };
+  if (!agreed) return;
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const location = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        setShowAgreement(false);
+        setAgreed(false);
+        onStartOrder(location);
+      },
+      (error) => {
+        console.warn("لم يتمكن من الحصول على الموقع:", error.message);
+        setShowAgreement(false);
+        setAgreed(false);
+        onStartOrder(); // بدون الموقع
+      }
+    );
+  } else {
+    setShowAgreement(false);
+    setAgreed(false);
+    onStartOrder(); // بدون الموقع
+  }
+};
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
