@@ -110,23 +110,12 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
 
           {/* Order Button */}
           <div className="flex flex-col items-center justify-center w-full md:w-2/3">
-<div className="flex justify-center mt-6">
-  <button
-    onClick={handleStartOrder}
-    className="
-      px-8 py-3
-      text-lg font-semibold
-      text-white
-      rounded-lg
-      bg-blue-600
-      hover:bg-blue-700
-      shadow-md hover:shadow-lg
-      transition-all duration-300
-    "
-  >
-    ابدأ الطلب الآن
-  </button>
-</div>
+            <button
+              onClick={handleStartOrder}
+              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-12 rounded-3xl text-xl shadow-lg hover:shadow-green-500/50 transition-all duration-300 transform hover:scale-105"
+            >
+              ابدأ الطلب الآن
+            </button>
           </div>
         </div>
 
