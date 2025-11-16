@@ -2,7 +2,7 @@ import { MessageCircle, FileText, BookOpen, Printer, Settings, ShoppingCart } fr
 import { useState } from "react";
 
 interface HomePageProps {
-  onStartOrder: (location?: { latitude: number; longitude: number }) => void;
+  onStartOrder: (coords?: { lat: number; lng: number }) => void; // يمكن تمرير الموقع
   onAdminAccess: () => void;
 }
 
@@ -10,38 +10,37 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
   const [showAgreement, setShowAgreement] = useState(false);
   const [agreed, setAgreed] = useState(false);
 
+  // وظيفة زر ابدأ الطلب
   const handleStartOrder = () => {
     setShowAgreement(true);
   };
 
+  // وظيفة تأكيد الشروط + طلب الموقع
   const confirmAgreement = () => {
-  if (!agreed) return;
-
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const location = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        };
-        setShowAgreement(false);
-        setAgreed(false);
-        onStartOrder(location);
-      },
-      (error) => {
-        console.warn("لم يتمكن من الحصول على الموقع:", error.message);
-        setShowAgreement(false);
-        setAgreed(false);
-        onStartOrder(); // بدون الموقع
-      }
-    );
-  } else {
-    setShowAgreement(false);
-    setAgreed(false);
-    onStartOrder(); // بدون الموقع
-  }
-};
-
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setShowAgreement(false);
+          setAgreed(false);
+          onStartOrder({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        () => {
+          // إذا رفض المستخدم مشاركة الموقع
+          setShowAgreement(false);
+          setAgreed(false);
+          onStartOrder(); // بدون موقع
+        }
+      );
+    } else {
+      // المتصفح لا يدعم الموقع
+      setShowAgreement(false);
+      setAgreed(false);
+      onStartOrder();
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
@@ -67,7 +66,6 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
               </div>
             </div>
           </div>
-
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
             روبوت خدمات
             <span className="text-green-400 glow-text"> WhatsApp</span>
@@ -109,6 +107,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
           أسعارنا أرخص من المكاتب 🔥
         </p>
         <div className="flex flex-col md:flex-row justify-between gap-6 mb-12">
+          {/* جدول الأسعار */}
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20 w-full md:w-1/3">
             <h4 className="text-white font-semibold mb-2 text-lg text-center">الأسعار قبل وبعد الخصم</h4>
             <table className="w-full text-white text-center border-collapse">
@@ -134,6 +133,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
             </table>
           </div>
 
+          {/* زر الطلب */}
           <div className="flex flex-col items-center justify-center w-full md:w-2/3">
             <button
               onClick={handleStartOrder}
@@ -159,7 +159,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 w-11/12 max-w-lg text-white font-sans">
               <h2 className="text-2xl font-bold mb-4 text-yellow-400 text-center">الشروط والقواعد</h2>
-
+              
               <ul className="list-disc list-inside mb-6 space-y-2 text-gray-200 text-lg leading-relaxed">
                 <li>استخدام أسماء وهمية أو غير صحيحة (مثل حيوانات أو جماد) يؤدي لإلغاء الطلب.</li>
                 <li>إرسال الطلبات بشكل متكرر يعتبر سبام، وسيتم تحصيل ثمن الطلبات المكررة.</li>
@@ -169,7 +169,6 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
                 <li>أي محاولة لإساءة استخدام الخدمة تؤدي للحظر الدائم من الطلبات.</li>
                 <li>أي تسريب للملخصات قد يعرضك للمسائلة القانونية.</li>
                 <li>أنا لا أذهب إليك، أنا موجود في الصف، تعال إليّ للحصول على الطلب.</li>
-                <li>أوافق على تسجيل موقعي التقريبي ضمن بيانات الطلب لحماية الخدمة.</li>
               </ul>
 
               <div className="flex items-start mb-6">
@@ -180,7 +179,10 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
                   onChange={() => setAgreed(!agreed)}
                   className="mt-1 w-6 h-6 mr-4"
                 />
-                <label htmlFor="agree" className="text-gray-300 text-lg leading-snug">
+                <label
+                  htmlFor="agree"
+                  className="text-gray-300 text-lg leading-snug"
+                >
                   أقر بأنني قرأت جميع الشروط والقواعد وأوافق عليها
                 </label>
               </div>
@@ -197,6 +199,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
             </div>
           </div>
         )}
+
       </div>
     </div>
   );
