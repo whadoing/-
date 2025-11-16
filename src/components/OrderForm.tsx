@@ -434,7 +434,6 @@ ${phoneNumber && isPhoneValid ? `رقم الهاتف: ${phoneNumber}` : ""}
 ${note ? `ملاحظات: ${note}` : ""}
 السعر: ${price} ريال
 `);
-
     setShowModal(false);
     setShowCopyModal(true);
 
@@ -736,69 +735,47 @@ ${note ? `ملاحظات: ${note}` : ""}
 
     </div>
 
-{/* حقل الرقم السعودي (اختياري) */}
-<div className="mb-4">
-  <label className="block text-white font-semibold mb-2">
-    رقمك للتواصل (اختياري)
-  </label>
-  <div className="flex rounded-xl overflow-hidden border border-white/20">
-    {/* رمز السعودية +966 */}
-    <span className="flex items-center justify-center bg-gray-700 text-white px-3">
-      🇸🇦 +966
-    </span>
+    {/* خانة اختيار وقت التسليم */}
+    <div>
+      <label className="block text-white font-semibold mb-2">
+        متى سأسلمك المطلوب؟
+      </label>
+      <div className="flex flex-col space-y-2">
+        <button
+          type="button"
+          className={`w-full text-left px-4 py-3 rounded-xl border ${
+            deliveryTime === "morning" ? "border-blue-400 bg-blue-500/20" : "border-white/20"
+          } text-white hover:border-blue-400 hover:bg-blue-500/10 transition-all`}
+          onClick={() => setDeliveryTime("morning")}
+        >
+          بداية الدوام <span className="text-red-400">(لازم تجي بدري)</span>
+        </button>
 
-    {/* خانة الرقم */}
-    <input
-      type="tel"
-      value={phoneNumber}
-      onChange={(e) => {
-        const val = e.target.value.replace(/\D/g, "");
-        setPhoneNumber(val);
+        <button
+          type="button"
+          className={`w-full text-left px-4 py-3 rounded-xl border ${
+            deliveryTime === "break" ? "border-blue-400 bg-blue-500/20" : "border-white/20"
+          } text-white hover:border-blue-400 hover:bg-blue-500/10 transition-all`}
+          onClick={() => setDeliveryTime("break")}
+        >
+          وقت الفسحة <span className="text-red-400">(صف 1/8)</span>
+        </button>
 
-        if (val.length === 9 && val.startsWith("5")) {
-          setIsPhoneValid(true);
-        } else {
-          setIsPhoneValid(false);
-        }
-      }}
-      placeholder="أدخل رقم جوالك يبدأ بـ5"
-      className={`flex-1 px-4 py-3 rounded-xl outline-none transition-all text-black
-        ${phoneNumber.length === 0 
-          ? "border border-white/20 focus:ring-2 focus:ring-blue-400/30 bg-white/10"
-          : isPhoneValid
-          ? "border-2 border-green-500 focus:ring-2 focus:ring-green-400/50 bg-green-50"
-          : "border-2 border-red-500 focus:ring-2 focus:ring-red-400/50 bg-red-50"
-        }
-      `}
-    />
-  </div>
+        <button
+          type="button"
+          className={`w-full text-left px-4 py-3 rounded-xl border ${
+            deliveryTime === "anytime" ? "border-blue-400 bg-blue-500/20" : "border-white/20"
+          } text-white hover:border-blue-400 hover:bg-blue-500/10 transition-all`}
+          onClick={() => setDeliveryTime("anytime")}
+        >
+          في أي وقت <span className="text-red-400">(تعال افتح الباب وتقولي الطلب)</span>
+        </button>
+      </div>
 
-  {/* رسالة التحقق */}
-  {phoneNumber.length > 0 && (
-    <p className={`text-sm mt-1 ${isPhoneValid ? "text-green-400" : "text-red-400"}`}>
-      {isPhoneValid ? "الرقم صحيح" : "الرقم غير صالح! يجب أن يبدأ بـ5 ويتكون من 9 أرقام."}
-    </p>
-  )}
-</div>
-
-{/* حقل الملاحظات */}
-{formData.serviceType === "print" && (
-  <div>
-    <label className="block text-white font-semibold mb-2">
-      ملاحظات إضافية
-    </label>
-    <textarea
-      value={note}
-      onChange={(e) => {
-        if (e.target.value.length <= 200) setNote(e.target.value);
-      }}
-      placeholder="اكتب ملاحظتك للطلب"
-      className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 outline-none transition-all"
-      rows={3}
-    />
-    <p className="text-gray-400 text-sm mt-1">{note.length}/200</p>
-  </div>
-)}
+      <p className="text-red-400 text-sm mt-1">
+        إذا لم تحضر في الوقت المحدد، يمكنك الحضور في أي وقت يناسبك.
+      </p>
+    </div>
   </>
 )}
 
