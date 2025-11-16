@@ -297,7 +297,7 @@ const sendOrderImage = async (
 
   const bg = new Image();
   bg.crossOrigin = "anonymous";
-  bg.src = "https://i.ibb.co/V0P2YB0d"; // ← الرابط الجديد
+bg.src = "https://i.ibb.co/20fg3K0w/6ed37789e0257df80630195d70ac4415.jpg";
 
   bg.onload = () => {
     ctx.drawImage(bg, 0, 0, width, height);
