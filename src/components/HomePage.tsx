@@ -11,7 +11,6 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
   const [agreed, setAgreed] = useState(false);
 
   const handleStartOrder = () => setShowAgreement(true);
-
   const confirmAgreement = () => {
     setShowAgreement(false);
     setAgreed(false);
@@ -19,7 +18,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 flex flex-col items-center p-6">
+    <div className="min-h-screen flex flex-col items-center p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <div className="max-w-5xl w-full mx-auto text-center relative">
 
         {/* Admin Button */}
@@ -55,30 +54,21 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
 
         {/* Services */}
         <div className="grid md:grid-cols-4 gap-6 mb-12">
-          {/* Online Market Service */}
-          <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg hover:shadow-xl transition-all duration-300">
-            <ShoppingCart className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">خدمة السوق أونلاين</h3>
-            <p className="text-gray-300 text-sm">توصيل المستلزمات والملفات للطالب داخل المدرسة</p>
-          </div>
-
-          <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg hover:shadow-xl transition-all duration-300">
-            <FileText className="w-12 h-12 text-blue-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">طباعة ملف</h3>
-            <p className="text-gray-300 text-sm">طباعة ملفات PDF والصور بجودة عالية ليزر</p>
-          </div>
-
-          <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg hover:shadow-xl transition-all duration-300">
-            <BookOpen className="w-12 h-12 text-purple-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">ملخص وحدة</h3>
-            <p className="text-gray-300 text-sm">ملخص مختصر لكل وحدة دراسية على حدة</p>
-          </div>
-
-          <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg hover:shadow-xl transition-all duration-300">
-            <BookOpen className="w-12 h-12 text-green-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">ملخص كتاب كامل</h3>
-            <p className="text-gray-300 text-sm">ملخص كامل يغطي الكتاب بأكمله</p>
-          </div>
+          {[
+            { icon: ShoppingCart, title: "خدمة السوق أونلاين", color: "text-yellow-400", desc: "توصيل المستلزمات والملفات للطالب داخل المدرسة" },
+            { icon: FileText, title: "طباعة ملف", color: "text-blue-400", desc: "طباعة ملفات PDF والصور بجودة عالية ليزر" },
+            { icon: BookOpen, title: "ملخص وحدة", color: "text-purple-400", desc: "ملخص مختصر لكل وحدة دراسية على حدة" },
+            { icon: BookOpen, title: "ملخص كتاب كامل", color: "text-green-400", desc: "ملخص كامل يغطي الكتاب بأكمله" },
+          ].map((service, i) => (
+            <div
+              key={i}
+              className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <service.icon className={`w-12 h-12 mx-auto mb-4 ${service.color}`} />
+              <h3 className="text-xl font-semibold text-white mb-2">{service.title}</h3>
+              <p className="text-gray-300 text-sm">{service.desc}</p>
+            </div>
+          ))}
         </div>
 
         {/* Prices + Order Button */}
@@ -98,16 +88,22 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-white/20"><td>1</td><td>1.5</td><td>1</td></tr>
-                <tr className="border-b border-white/20"><td>2</td><td>2</td><td>1</td></tr>
-                <tr className="border-b border-white/20"><td>3</td><td>2</td><td>1</td></tr>
-                <tr className="border-b border-white/20"><td>5</td><td>4</td><td>2</td></tr>
-                <tr className="border-b border-white/20"><td>10</td><td>5</td><td>3</td></tr>
-                <tr className="border-b border-white/20"><td>20</td><td>8</td><td>6</td></tr>
-                <tr className="border-b border-white/20"><td>30</td><td>15</td><td>12</td></tr>
-                <tr className="border-b border-white/20"><td>40</td><td>20</td><td>16</td></tr>
-                <tr className="border-b border-white/20"><td>50</td><td>25</td><td>20</td></tr>
-                <tr className="border-b border-white/20"><td>60</td><td>30</td><td>25</td></tr>
+                {[
+                  [1, 1.5, 1],
+                  [2, 2, 1],
+                  [3, 2, 1],
+                  [5, 4, 2],
+                  [10, 5, 3],
+                  [20, 8, 6],
+                  [30, 15, 12],
+                  [40, 20, 16],
+                  [50, 25, 20],
+                  [60, 30, 25],
+                ].map((row, i) => (
+                  <tr key={i} className="border-b border-white/20">
+                    {row.map((cell, j) => <td key={j} className="py-2">{cell}</td>)}
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -116,7 +112,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
           <div className="flex flex-col items-center justify-center w-full md:w-2/3">
             <button
               onClick={handleStartOrder}
-              className="bg-gradient-to-r from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white font-bold py-4 px-12 rounded-2xl text-xl shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105 glow-button"
+              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-4 px-12 rounded-3xl text-xl shadow-lg hover:shadow-green-500/50 transition-all duration-300 transform hover:scale-105"
             >
               ابدأ الطلب الآن
             </button>
@@ -126,7 +122,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
         {/* Working Hours + Contact */}
         <div className="mt-12 bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10 text-center">
           <p className="text-gray-300 mb-2">
-            <span className="text-green-400 font-semibold">ساعات العمل:</span> من الساعة 12 ظهرًا إلى 10 مساءً
+            <span className="text-green-400 font-semibold">ساعات العمل:</span> من الساعة 12 ظهرًا إلى ال 10 مساءً
           </p>
           <p className="text-green-400 font-semibold">
             تواصل معي إذا أردت: <a href="tel:+966569772645" className="underline hover:text-green-300">+966 56 977 2645</a>
@@ -136,7 +132,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
         {/* Modal الشروط والقواعد */}
         {showAgreement && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 w-11/12 max-w-lg text-white font-sans">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 w-11/12 max-w-lg text-white font-sans shadow-lg">
               <h2 className="text-2xl font-bold mb-4 text-yellow-400 text-center">الشروط والقواعد</h2>
               <ul className="list-disc list-inside mb-6 space-y-2 text-gray-200 text-lg leading-relaxed">
                 <li>استخدام أسماء وهمية أو غير صحيحة يؤدي لإلغاء الطلب.</li>
@@ -165,7 +161,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
               <button
                 disabled={!agreed}
                 onClick={confirmAgreement}
-                className={`w-full py-3 rounded-xl text-white font-bold transition-all duration-300 ${
+                className={`w-full py-3 rounded-2xl text-white font-bold transition-all duration-300 ${
                   agreed ? "bg-green-500 hover:bg-green-600" : "bg-gray-600 cursor-not-allowed"
                 }`}
               >
