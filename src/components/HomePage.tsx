@@ -10,9 +10,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
   const [showAgreement, setShowAgreement] = useState(false);
   const [agreed, setAgreed] = useState(false);
 
-  const handleStartOrder = () => {
-    setShowAgreement(true);
-  };
+  const handleStartOrder = () => setShowAgreement(true);
 
   const confirmAgreement = () => {
     setShowAgreement(false);
@@ -21,8 +19,9 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6">
-      <div className="max-w-5xl mx-auto text-center relative">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 flex flex-col items-center p-6">
+      <div className="max-w-5xl w-full mx-auto text-center relative">
+
         {/* Admin Button */}
         <div className="absolute top-6 left-6">
           <button
@@ -34,7 +33,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
           </button>
         </div>
 
-        {/* Logo and Header */}
+        {/* Logo & Header */}
         <div className="mb-12">
           <div className="flex items-center justify-center mb-6">
             <div className="relative">
@@ -54,31 +53,31 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
           </p>
         </div>
 
-        {/* Services Preview */}
+        {/* Services */}
         <div className="grid md:grid-cols-4 gap-6 mb-12">
-{/* خدمة السوق أونلاين */}
-<div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
-  <ShoppingCart className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
-  <h3 className="text-xl font-semibold text-white mb-2">خدمة السوق أونلاين</h3>
-  <p className="text-gray-300">توصيل المستلزمات والملفات للطالب داخل المدرسة</p>
-</div>
+          {/* Online Market Service */}
+          <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg hover:shadow-xl transition-all duration-300">
+            <ShoppingCart className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-white mb-2">خدمة السوق أونلاين</h3>
+            <p className="text-gray-300 text-sm">توصيل المستلزمات والملفات للطالب داخل المدرسة</p>
+          </div>
 
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
+          <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg hover:shadow-xl transition-all duration-300">
             <FileText className="w-12 h-12 text-blue-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-white mb-2">طباعة ملف</h3>
-            <p className="text-gray-300">طباعة ملفات PDF والصور بجودة عالية ليزر </p>
+            <p className="text-gray-300 text-sm">طباعة ملفات PDF والصور بجودة عالية ليزر</p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
+          <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg hover:shadow-xl transition-all duration-300">
             <BookOpen className="w-12 h-12 text-purple-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-white mb-2">ملخص وحدة</h3>
-            <p className="text-gray-300">ملخص مختصر لكل وحدة دراسية على حدة</p>
+            <p className="text-gray-300 text-sm">ملخص مختصر لكل وحدة دراسية على حدة</p>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
+          <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 shadow-lg hover:shadow-xl transition-all duration-300">
             <BookOpen className="w-12 h-12 text-green-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-white mb-2">ملخص كتاب كامل</h3>
-            <p className="text-gray-300">ملخص كامل يغطي الكتاب بأكمله</p>
+            <p className="text-gray-300 text-sm">ملخص كامل يغطي الكتاب بأكمله</p>
           </div>
         </div>
 
@@ -87,8 +86,8 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
           أسعارنا أرخص من المكاتب 🔥
         </p>
         <div className="flex flex-col md:flex-row justify-between gap-6 mb-12">
-          {/* جدول الأسعار */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20 w-full md:w-1/3">
+          {/* Price Table */}
+          <div className="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10 w-full md:w-1/3">
             <h4 className="text-white font-semibold mb-2 text-lg text-center">الأسعار قبل وبعد الخصم</h4>
             <table className="w-full text-white text-center border-collapse">
               <thead>
@@ -113,11 +112,11 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
             </table>
           </div>
 
-          {/* زر الطلب */}
+          {/* Order Button */}
           <div className="flex flex-col items-center justify-center w-full md:w-2/3">
             <button
               onClick={handleStartOrder}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-12 rounded-2xl text-xl shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105 glow-button"
+              className="bg-gradient-to-r from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white font-bold py-4 px-12 rounded-2xl text-xl shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105 glow-button"
             >
               ابدأ الطلب الآن
             </button>
@@ -125,9 +124,9 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
         </div>
 
         {/* Working Hours + Contact */}
-        <div className="mt-12 bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 text-center">
+        <div className="mt-12 bg-white/5 backdrop-blur-md rounded-xl p-4 border border-white/10 text-center">
           <p className="text-gray-300 mb-2">
-            <span className="text-green-400 font-semibold">ساعات العمل:</span> من الساعة 12 ظهرًا إلى ال 10 مساءً
+            <span className="text-green-400 font-semibold">ساعات العمل:</span> من الساعة 12 ظهرًا إلى 10 مساءً
           </p>
           <p className="text-green-400 font-semibold">
             تواصل معي إذا أردت: <a href="tel:+966569772645" className="underline hover:text-green-300">+966 56 977 2645</a>
@@ -135,53 +134,46 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
         </div>
 
         {/* Modal الشروط والقواعد */}
-        {/* Modal الشروط والقواعد */}
-{showAgreement && (
-  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 w-11/12 max-w-lg text-white font-sans">
-      <h2 className="text-2xl font-bold mb-4 text-yellow-400 text-center">الشروط والقواعد</h2>
-      
-      <ul className="list-disc list-inside mb-6 space-y-2 text-gray-200 text-lg leading-relaxed">
-        <li>استخدام أسماء وهمية أو غير صحيحة (مثل حيوانات أو جماد) يؤدي لإلغاء الطلب.</li>
-        <li>إرسال الطلبات بشكل متكرر يعتبر سبام، وسيتم تحصيل ثمن الطلبات المكررة.</li>
-        <li>عدم دفع قيمة الطلب يعتبر مخالفة وسيتم التواصل مع الجهات المختصة.</li>
-        <li>لا يتحمل الفريق أي مسؤولية عن المعلومات غير الصحيحة المقدمة من المستخدم.</li>
-        <li>يتم التعامل مع أي مخالفة للقواعد بجدية وفق النظام الداخلي.</li>
-        <li>أي محاولة لإساءة استخدام الخدمة تؤدي للحظر الدائم من الطلبات.</li>
-        <li>أي تسريب للملخصات قد يعرضك للمسائلة القانونية.</li>
-        <li>أنا لا أذهب إليك، أنا موجود في الصف، تعال إليّ للحصول على الطلب.</li>
+        {showAgreement && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 w-11/12 max-w-lg text-white font-sans">
+              <h2 className="text-2xl font-bold mb-4 text-yellow-400 text-center">الشروط والقواعد</h2>
+              <ul className="list-disc list-inside mb-6 space-y-2 text-gray-200 text-lg leading-relaxed">
+                <li>استخدام أسماء وهمية أو غير صحيحة يؤدي لإلغاء الطلب.</li>
+                <li>إرسال الطلبات بشكل متكرر يعتبر سبام.</li>
+                <li>عدم دفع قيمة الطلب يعتبر مخالفة وسيتم التواصل مع الجهات المختصة.</li>
+                <li>لا يتحمل الفريق أي مسؤولية عن المعلومات غير الصحيحة.</li>
+                <li>يتم التعامل مع أي مخالفة للقواعد بجدية.</li>
+                <li>أي محاولة لإساءة استخدام الخدمة تؤدي للحظر الدائم.</li>
+                <li>أي تسريب للملخصات قد يعرضك للمسائلة القانونية.</li>
+                <li>أنا لا أذهب إليك، تعال للحصول على الطلب.</li>
+              </ul>
 
+              <div className="flex items-start mb-6">
+                <input
+                  type="checkbox"
+                  id="agree"
+                  checked={agreed}
+                  onChange={() => setAgreed(!agreed)}
+                  className="mt-1 w-6 h-6 mr-4"
+                />
+                <label htmlFor="agree" className="text-gray-300 text-lg leading-snug">
+                  أقر بأنني قرأت جميع الشروط والقواعد وأوافق عليها
+                </label>
+              </div>
 
-      </ul>
-
-      <div className="flex items-start mb-6">
-        <input
-          type="checkbox"
-          id="agree"
-          checked={agreed}
-          onChange={() => setAgreed(!agreed)}
-          className="mt-1 w-6 h-6 mr-4"
-        />
-        <label
-          htmlFor="agree"
-          className="text-gray-300 text-lg leading-snug"
-        >
-          أقر بأنني قرأت جميع الشروط والقواعد وأوافق عليها
-        </label>
-      </div>
-
-      <button
-        disabled={!agreed}
-        onClick={confirmAgreement}
-        className={`w-full py-3 rounded-xl text-white font-bold transition-all duration-300 ${
-          agreed ? "bg-green-500 hover:bg-green-600" : "bg-gray-600 cursor-not-allowed"
-        }`}
-      >
-        ابدأ الطلب
-      </button>
-    </div>
-  </div>
-)}
+              <button
+                disabled={!agreed}
+                onClick={confirmAgreement}
+                className={`w-full py-3 rounded-xl text-white font-bold transition-all duration-300 ${
+                  agreed ? "bg-green-500 hover:bg-green-600" : "bg-gray-600 cursor-not-allowed"
+                }`}
+              >
+                ابدأ الطلب
+              </button>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>
