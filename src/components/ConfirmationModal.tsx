@@ -14,11 +14,12 @@ interface ConfirmationModalProps {
   deliveryTime: string;
   phoneNumber: string;
   isPhoneValid: boolean;
-  note?: string;
+  note?: string; // ← أضف هذا
   onConfirm: () => void;
   onCancel: () => void;
   isSubmitting: boolean;
 }
+
 
 export default function ConfirmationModal({
   formData,
@@ -58,36 +59,6 @@ export default function ConfirmationModal({
       default: return serviceType;
     }
   };
-
-  //  ⬇️⬇️ إضافة رسالة واتساب هنا قبل الـ return  ⬇️⬇️
-  const whatsappNumber = "96650XXXXXXX"; // رقمك بدون +
-  
-  const message =
-`تأكيد طلب جديد
-
-رقم الطلب:
-${formData.orderId ? formData.orderId.slice(0, 8) : "غير متوفر"}
-
-الاسم:
-${formData.fullName}
-
-الصف:
-${formData.grade}
-
-نوع الخدمة:
-${getServiceLabel(formData.serviceType)}
-
-السعر:
-${price} ريال
-`;
-
-  const whatsappUrl =
-    "https://wa.me/" +
-    whatsappNumber +
-    "?text=" +
-    encodeURIComponent(message);
-  //  ⬆️⬆️ نهاية إضافة رسالة واتساب  ⬆️⬆️
-
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
@@ -198,16 +169,6 @@ ${price} ريال
             )}
           </button>
         </div>
-
-        {/* زر واتساب */}
-        <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block mt-4 w-full text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition"
-        >
-          إرسال التأكيد عبر واتساب
-        </a>
       </div>
     </div>
   );

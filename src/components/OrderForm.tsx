@@ -13,6 +13,7 @@ const DISCORD_WEBHOOK_URL =
   { id: "p3", name: "مسطرة", price: 7, image: "https://via.placeholder.com/80" },
 ];
 
+
 const safeFileName = (file: File) => {
   return file.name.replace(/\s+/g, "_").replace(/[^a-zA-Z0-9._-]/g, "");
 };
@@ -812,24 +813,29 @@ ${note ? `ملاحظات: ${note}` : ""}
 {showCopyModal && (
   <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
     <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 max-w-md w-full border border-white/20 shadow-2xl">
-      <h3 className="text-2xl font-bold text-white mb-4 text-center">تفاصيل الطلب</h3>
-      <pre
-        className="text-white bg-black/20 p-4 rounded-lg mb-4 break-words whitespace-pre-wrap max-h-96 overflow-y-auto"
-      >
-        {orderLink}
-        {"\n"}تواصل معي إذا أردت: +966 56 977 2645
-      </pre>
+      <h3 className="text-2xl font-bold text-white mb-6 text-center">تأكيد الطلب</h3>
 
-      <p className="text-green-400 font-semibold text-center mb-4">
-        تواصل معي عبر: <a href="tel:+966569772645" className="underline">+966 56 977 2645</a>
+      <p className="text-white mb-4">
+        سيتم إرسال تفاصيل طلبك عبر واتساب مباشرة.
       </p>
 
-      <button
-        onClick={() => navigator.clipboard.writeText(orderLink)}
-        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-xl mb-2 transition-all"
+      <a
+        href={`https://wa.me/966569772645?text=${encodeURIComponent(
+          `رقم الطلب: ${orderLink.match(/رقم الطلب: (\S+)/)?.[1] || ""}\n` +
+          `اسم الطالب: ${formData.fullName}\n` +
+          `الصف: ${formData.grade}\n` +
+          `نوع الخدمة: ${formData.serviceType}\n` +
+          `${fileInfo?.file ? `اسم الملف: ${fileInfo.file.name}\n` : ""}` +
+          `وقت التسليم: ${deliveryTime}\n` +
+          `السعر: ${price} ريال\n` +
+          `${note ? `ملاحظات: ${note}\n` : ""}`
+        )}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl mb-2 text-center transition-all"
       >
-        نسخ الرابط
-      </button>
+        تأكيد الطلب عبر واتساب
+      </a>
 
       <button
         onClick={() => setShowCopyModal(false)}
