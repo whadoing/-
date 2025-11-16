@@ -381,25 +381,24 @@ const visitorInfo = getVisitorInfo();
 
 // أضف المعلومات للرسالة
 const discordMessage = `
-----------------------------------------
-رقم الطلب        ${orderId.slice(0, 8)}
-اسم الطالب       ${formData.fullName}
-الصف الدراسي      ${formData.grade}
-نوع الخدمة        ${serviceName}
-${fileInfo?.file ? `اسم الملف        ${fileInfo.file.name}` : ""}
-${fileInfo?.pageCount ? `عدد الصفحات      ${fileInfo.pageCount}` : ""}
-رقم الهاتف        ${phoneNumber && isPhoneValid ? phoneNumber : "غير محدد"}
-وقت التسليم      ${deliveryLabel}
-السعر            ${price} ريال
-${note ? `ملاحظات: ${note}` : ""}
-IP              غير متوفر
-نظام التشغيل     ${visitorInfo.platform}
-المتصفح          ${visitorInfo.userAgent}
-لغة المتصفح       ${visitorInfo.language}
-السلة: ${cart.map(p => `${p.name} (${p.price} ريال)`).join(", ")}
-السعر النهائي: ${totalPrice} ريال
-
-----------------------------------------
+\`\`\`
+رقم الطلب        \`${orderId.slice(0,8)}\`
+اسم الطالب       \`${formData.fullName}\`
+الصف الدراسي      \`${formData.grade}\`
+نوع الخدمة        \`${serviceName}\`
+${fileInfo?.file ? `اسم الملف        \`${fileInfo.file.name}\`` : ""}
+${fileInfo?.pageCount ? `عدد الصفحات      \`${fileInfo.pageCount}\`` : ""}
+رقم الهاتف        \`${phoneNumber && isPhoneValid ? phoneNumber : "غير محدد"}\`
+وقت التسليم      \`${deliveryLabel}\`
+السعر            \`${price} ريال\`
+${note ? `ملاحظات: \`${note}\`` : ""}
+IP              \`غير متوفر\`
+نظام التشغيل     \`${visitorInfo.platform}\`
+المتصفح          \`${visitorInfo.userAgent}\`
+لغة المتصفح       \`${visitorInfo.language}\`
+السلة:           \`${cart.map(p => `${p.name} (${p.price} ريال)`).join(", ")}\`
+السعر النهائي:    \`${totalPrice} ريال\`
+\`\`\`
 `;
 
 const getIP = async () => {
