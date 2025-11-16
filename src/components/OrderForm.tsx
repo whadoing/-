@@ -563,7 +563,7 @@ ${note ? `ملاحظات: ${note}` : ""}
 >
   <option value="" className="bg-gray-800">اختر نوع الخدمة</option>
   <option value="print" className="bg-gray-800">طباعة ملف</option>
-  <option value="shopping" className="bg-gray-800">التسوق</option>
+  <option value="shopping" disabled className="bg-gray-800 text-gray-400">التسوق (قريبًا)</option>
   <option value="summary" disabled className="bg-gray-800 text-gray-400">ملخص وحدة (قريباً)</option>
   <option value="book_summary" disabled className="bg-gray-800 text-gray-400">ملخص كتاب كامل (قريباً)</option>
 </select>
