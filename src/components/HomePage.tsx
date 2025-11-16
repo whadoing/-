@@ -2,7 +2,7 @@ import { MessageCircle, FileText, BookOpen, Printer, Settings, ShoppingCart } fr
 import { useState } from "react";
 
 interface HomePageProps {
-  onStartOrder: (coords?: { lat: number; lng: number }) => void; // يمكن تمرير الموقع
+  onStartOrder: () => void;
   onAdminAccess: () => void;
 }
 
@@ -10,36 +10,14 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
   const [showAgreement, setShowAgreement] = useState(false);
   const [agreed, setAgreed] = useState(false);
 
-  // وظيفة زر ابدأ الطلب
   const handleStartOrder = () => {
     setShowAgreement(true);
   };
 
-  // وظيفة تأكيد الشروط + طلب الموقع
   const confirmAgreement = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setShowAgreement(false);
-          setAgreed(false);
-          onStartOrder({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        () => {
-          // إذا رفض المستخدم مشاركة الموقع
-          setShowAgreement(false);
-          setAgreed(false);
-          onStartOrder(); // بدون موقع
-        }
-      );
-    } else {
-      // المتصفح لا يدعم الموقع
-      setShowAgreement(false);
-      setAgreed(false);
-      onStartOrder();
-    }
+    setShowAgreement(false);
+    setAgreed(false);
+    onStartOrder();
   };
 
   return (
@@ -66,6 +44,7 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
               </div>
             </div>
           </div>
+
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-4 drop-shadow-lg">
             روبوت خدمات
             <span className="text-green-400 glow-text"> WhatsApp</span>
@@ -77,11 +56,12 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
 
         {/* Services Preview */}
         <div className="grid md:grid-cols-4 gap-6 mb-12">
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
-            <ShoppingCart className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-white mb-2">خدمة السوق أونلاين</h3>
-            <p className="text-gray-300">توصيل المستلزمات والملفات للطالب داخل المدرسة</p>
-          </div>
+{/* خدمة السوق أونلاين */}
+<div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
+  <ShoppingCart className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
+  <h3 className="text-xl font-semibold text-white mb-2">خدمة السوق أونلاين</h3>
+  <p className="text-gray-300">توصيل المستلزمات والملفات للطالب داخل المدرسة</p>
+</div>
 
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
             <FileText className="w-12 h-12 text-blue-400 mx-auto mb-4" />
@@ -155,50 +135,53 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
         </div>
 
         {/* Modal الشروط والقواعد */}
-        {showAgreement && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 w-11/12 max-w-lg text-white font-sans">
-              <h2 className="text-2xl font-bold mb-4 text-yellow-400 text-center">الشروط والقواعد</h2>
-              
-              <ul className="list-disc list-inside mb-6 space-y-2 text-gray-200 text-lg leading-relaxed">
-                <li>استخدام أسماء وهمية أو غير صحيحة (مثل حيوانات أو جماد) يؤدي لإلغاء الطلب.</li>
-                <li>إرسال الطلبات بشكل متكرر يعتبر سبام، وسيتم تحصيل ثمن الطلبات المكررة.</li>
-                <li>عدم دفع قيمة الطلب يعتبر مخالفة وسيتم التواصل مع الجهات المختصة.</li>
-                <li>لا يتحمل الفريق أي مسؤولية عن المعلومات غير الصحيحة المقدمة من المستخدم.</li>
-                <li>يتم التعامل مع أي مخالفة للقواعد بجدية وفق النظام الداخلي.</li>
-                <li>أي محاولة لإساءة استخدام الخدمة تؤدي للحظر الدائم من الطلبات.</li>
-                <li>أي تسريب للملخصات قد يعرضك للمسائلة القانونية.</li>
-                <li>أنا لا أذهب إليك، أنا موجود في الصف، تعال إليّ للحصول على الطلب.</li>
-              </ul>
+        {/* Modal الشروط والقواعد */}
+{showAgreement && (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 w-11/12 max-w-lg text-white font-sans">
+      <h2 className="text-2xl font-bold mb-4 text-yellow-400 text-center">الشروط والقواعد</h2>
+      
+      <ul className="list-disc list-inside mb-6 space-y-2 text-gray-200 text-lg leading-relaxed">
+        <li>استخدام أسماء وهمية أو غير صحيحة (مثل حيوانات أو جماد) يؤدي لإلغاء الطلب.</li>
+        <li>إرسال الطلبات بشكل متكرر يعتبر سبام، وسيتم تحصيل ثمن الطلبات المكررة.</li>
+        <li>عدم دفع قيمة الطلب يعتبر مخالفة وسيتم التواصل مع الجهات المختصة.</li>
+        <li>لا يتحمل الفريق أي مسؤولية عن المعلومات غير الصحيحة المقدمة من المستخدم.</li>
+        <li>يتم التعامل مع أي مخالفة للقواعد بجدية وفق النظام الداخلي.</li>
+        <li>أي محاولة لإساءة استخدام الخدمة تؤدي للحظر الدائم من الطلبات.</li>
+        <li>أي تسريب للملخصات قد يعرضك للمسائلة القانونية.</li>
+        <li>أنا لا أذهب إليك، أنا موجود في الصف، تعال إليّ للحصول على الطلب.</li>
 
-              <div className="flex items-start mb-6">
-                <input
-                  type="checkbox"
-                  id="agree"
-                  checked={agreed}
-                  onChange={() => setAgreed(!agreed)}
-                  className="mt-1 w-6 h-6 mr-4"
-                />
-                <label
-                  htmlFor="agree"
-                  className="text-gray-300 text-lg leading-snug"
-                >
-                  أقر بأنني قرأت جميع الشروط والقواعد وأوافق عليها
-                </label>
-              </div>
 
-              <button
-                disabled={!agreed}
-                onClick={confirmAgreement}
-                className={`w-full py-3 rounded-xl text-white font-bold transition-all duration-300 ${
-                  agreed ? "bg-green-500 hover:bg-green-600" : "bg-gray-600 cursor-not-allowed"
-                }`}
-              >
-                ابدأ الطلب
-              </button>
-            </div>
-          </div>
-        )}
+      </ul>
+
+      <div className="flex items-start mb-6">
+        <input
+          type="checkbox"
+          id="agree"
+          checked={agreed}
+          onChange={() => setAgreed(!agreed)}
+          className="mt-1 w-6 h-6 mr-4"
+        />
+        <label
+          htmlFor="agree"
+          className="text-gray-300 text-lg leading-snug"
+        >
+          أقر بأنني قرأت جميع الشروط والقواعد وأوافق عليها
+        </label>
+      </div>
+
+      <button
+        disabled={!agreed}
+        onClick={confirmAgreement}
+        className={`w-full py-3 rounded-xl text-white font-bold transition-all duration-300 ${
+          agreed ? "bg-green-500 hover:bg-green-600" : "bg-gray-600 cursor-not-allowed"
+        }`}
+      >
+        ابدأ الطلب
+      </button>
+    </div>
+  </div>
+)}
 
       </div>
     </div>
