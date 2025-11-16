@@ -18,7 +18,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
+<div className="min-h-screen bg-gradient-to-br from-yellow-400 via-orange-300 to-red-500">
       {currentPage === 'home' && (
         <HomePage 
           onStartOrder={() => setCurrentPage('order')}
