@@ -300,62 +300,64 @@ const sendOrderImage = async (
   bg.crossOrigin = "anonymous";
   bg.src = "https://i.ibb.co/20fg3K0w/6ed37789e0257df80630195d70ac4415.jpg";
 
-  bg.onload = () => {
-    ctx.drawImage(bg, 0, 0, width, height);
+bg.onload = async () => {
+  // تأكد من تحميل خط Inter
+  await document.fonts.load("bold 28px 'Inter'");
 
-    ctx.textAlign = "center";
-    ctx.textBaseline = "top";
-    ctx.font = "bold 28px 'Inter', sans-serif"; // استخدام خط Inter
+  ctx.drawImage(bg, 0, 0, width, height);
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  ctx.font = "bold 28px 'Inter', sans-serif"; // استخدام خط Inter
+  ctx.fillStyle = "#FFFFFF";
+
+  const lines: { label: string; value: string }[] = [
+    { label: "رقم الطلب:", value: orderId.slice(0, 8) },
+    { label: "اسم الطالب:", value: formData.fullName },
+    { label: "الصف الدراسي:", value: formData.grade },
+    { label: "نوع الخدمة:", value: formData.serviceType === "print" ? "طباعة ملف" : formData.serviceType === "summary" ? "ملخص وحدة" : "ملخص كتاب" },
+  ];
+
+  if (fileInfo?.file) lines.push({ label: "اسم الملف:", value: fileInfo.file.name });
+
+  const deliveryLabel =
+    deliveryTime === "morning" ? "بداية الدوام" :
+    deliveryTime === "break" ? "وقت الفسحة" : "في أي وقت";
+
+  lines.push({ label: "وقت التسليم:", value: deliveryLabel });
+  lines.push({ label: "السعر:", value: price + " ريال" });
+
+  // إعداد المسافات
+  const lineSpacing = 15; // المسافة بين كل Label+Value وزوج التالي
+  const valueOffset = 30; // المسافة بين Label و Value
+
+  // حساب الارتفاع الإجمالي لكل الأسطر
+  const totalHeight = lines.length * (valueOffset + lineSpacing);
+
+  // بدء الرسم من منتصف الصورة عموديًا
+  let startY = height / 2 - totalHeight / 2;
+
+  lines.forEach(line => {
+    // رسم Label
     ctx.fillStyle = "#FFFFFF";
+    ctx.shadowBlur = 0;
+    ctx.fillText(line.label, width / 2, startY);
 
-    const lines: { label: string; value: string }[] = [
-      { label: "رقم الطلب: ", value: orderId.slice(0, 8) },
-      { label: "اسم الطالب: ", value: formData.fullName },
-      { label: "الصف الدراسي: ", value: formData.grade },
-      { label: "نوع الخدمة: ", value: formData.serviceType === "print" ? "طباعة ملف" : formData.serviceType === "summary" ? "ملخص وحدة" : "ملخص كتاب" },
-    ];
+    // رسم Value مع Glow
+    ctx.fillStyle = "#FFFFFF";
+    ctx.shadowColor = "#8A2BE2"; // أرجواني
+    ctx.shadowBlur = 15;
+    ctx.fillText(line.value, width / 2, startY + valueOffset);
 
-    if (fileInfo?.file) lines.push({ label: "اسم الملف: ", value: fileInfo.file.name });
+    // تحديث startY للسطر التالي
+    startY += valueOffset + lineSpacing;
+  });
 
-    const deliveryLabel =
-      deliveryTime === "morning" ? "بداية الدوام" :
-      deliveryTime === "break" ? "وقت الفسحة" : "في أي وقت";
+  canvas.toBlob(callback, "image/png");
+};
 
-    lines.push({ label: "وقت التسليم: ", value: deliveryLabel });
-    lines.push({ label: "السعر: ", value: price + " ريال" });
+bg.onerror = () => callback(null);
 
-    // بداية رسم النص من منتصف الصورة عموديًا
-// lines: مصفوفة من { label, value }
-// width, height: أبعاد الصورة
-const lineSpacing = 10; // مسافة بين كل Label+Value وسطر التالي
-const valueOffset = 30; // المسافة بين Label و Value داخل نفس السطر
-
-// حساب الارتفاع الإجمالي لكل الأسطر
-const totalHeight = lines.length * (valueOffset + lineSpacing);
-
-// بدء الرسم من منتصف الصورة عموديًا
-let startY = height / 2 - totalHeight / 2;
-
-lines.forEach(line => {
-  // رسم Label
-  ctx.fillStyle = "#FFFFFF";
-  ctx.shadowBlur = 0;
-  ctx.fillText(line.label, width / 2, startY);
-
-  // رسم Value مع Glow
-  ctx.fillStyle = "#FFFFFF";
-  ctx.shadowColor = "#8A2BE2"; // أرجواني
-  ctx.shadowBlur = 15;
-  ctx.fillText(line.value, width / 2, startY + valueOffset);
-
-  // تحديث startY للسطر التالي
-  startY += valueOffset + lineSpacing;
-});
-
-    canvas.toBlob(callback, "image/png");
-  };
-
-  bg.onerror = () => callback(null);
 };
 
 
