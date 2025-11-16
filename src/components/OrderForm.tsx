@@ -812,37 +812,41 @@ ${note ? `ملاحظات: ${note}` : ""}
 
 {showCopyModal && (
   <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 max-w-md w-full border border-white/20 shadow-2xl">
-      <h3 className="text-2xl font-bold text-white mb-6 text-center">تأكيد الطلب</h3>
+    <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 max-w-md w-full border border-white/20 shadow-2xl flex flex-col justify-between h-auto">
+      <div>
+        <h3 className="text-2xl font-bold text-white mb-4 text-center">تأكيد الطلب</h3>
 
-      <p className="text-white mb-4">
-        سيتم إرسال تفاصيل طلبك عبر واتساب مباشرة.
-      </p>
+        <p className="text-white mb-4">
+          سيتم إرسال تفاصيل طلبك عبر واتساب مباشرة.
+        </p>
+      </div>
 
-      <a
-        href={`https://wa.me/966569772645?text=${encodeURIComponent(
-          `رقم الطلب: ${orderLink.match(/رقم الطلب: (\S+)/)?.[1] || ""}\n` +
-          `اسم الطالب: ${formData.fullName}\n` +
-          `الصف: ${formData.grade}\n` +
-          `نوع الخدمة: ${formData.serviceType}\n` +
-          `${fileInfo?.file ? `اسم الملف: ${fileInfo.file.name}\n` : ""}` +
-          `وقت التسليم: ${deliveryTime}\n` +
-          `السعر: ${price} ريال\n` +
-          `${note ? `ملاحظات: ${note}\n` : ""}`
-        )}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl mb-2 text-center transition-all"
-      >
-        تأكيد الطلب عبر واتساب
-      </a>
+      <div className="flex flex-col gap-3 mt-4">
+        <a
+          href={`https://wa.me/966569772645?text=${encodeURIComponent(
+            `رقم الطلب: ${orderLink.match(/رقم الطلب: (\S+)/)?.[1] || ""}\n` +
+            `اسم الطالب: ${formData.fullName}\n` +
+            `الصف: ${formData.grade}\n` +
+            `نوع الخدمة: ${formData.serviceType}\n` +
+            `${fileInfo?.file ? `اسم الملف: ${fileInfo.file.name}\n` : ""}` +
+            `وقت التسليم: ${deliveryTime}\n` +
+            `السعر: ${price} ريال\n` +
+            `${note ? `ملاحظات: ${note}\n` : ""}`
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl text-center transition-all"
+        >
+          تأكيد الطلب عبر واتساب
+        </a>
 
-      <button
-        onClick={() => setShowCopyModal(false)}
-        className="w-full border border-white/30 text-white py-3 px-6 rounded-xl hover:bg-white/10 transition-all"
-      >
-        إغلاق
-      </button>
+        <button
+          onClick={() => setShowCopyModal(false)}
+          className="w-full border border-white/30 text-white py-3 px-6 rounded-xl hover:bg-white/10 transition-all"
+        >
+          إغلاق
+        </button>
+      </div>
     </div>
   </div>
 )}
