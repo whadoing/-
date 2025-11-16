@@ -2,7 +2,7 @@ import { MessageCircle, FileText, BookOpen, Printer, Settings, ShoppingCart } fr
 import { useState } from "react";
 
 interface HomePageProps {
-  onStartOrder: () => void;
+  onStartOrder: (location?: { latitude: number; longitude: number }) => void;
   onAdminAccess: () => void;
 }
 
@@ -15,9 +15,32 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
   };
 
   const confirmAgreement = () => {
-    setShowAgreement(false);
-    setAgreed(false);
-    onStartOrder();
+    // نحاول الحصول على الموقع
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const location = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+          setShowAgreement(false);
+          setAgreed(false);
+          onStartOrder(location); // نرسل الطلب مع الموقع
+        },
+        (error) => {
+          console.warn("لم يتمكن من الحصول على الموقع:", error.message);
+          // نكمل الطلب بدون الموقع
+          setShowAgreement(false);
+          setAgreed(false);
+          onStartOrder();
+        }
+      );
+    } else {
+      console.warn("Geolocation غير مدعوم في هذا المتصفح");
+      setShowAgreement(false);
+      setAgreed(false);
+      onStartOrder();
+    }
   };
 
   return (
@@ -56,12 +79,11 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
 
         {/* Services Preview */}
         <div className="grid md:grid-cols-4 gap-6 mb-12">
-{/* خدمة السوق أونلاين */}
-<div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
-  <ShoppingCart className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
-  <h3 className="text-xl font-semibold text-white mb-2">خدمة السوق أونلاين</h3>
-  <p className="text-gray-300">توصيل المستلزمات والملفات للطالب داخل المدرسة</p>
-</div>
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
+            <ShoppingCart className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-white mb-2">خدمة السوق أونلاين</h3>
+            <p className="text-gray-300">توصيل المستلزمات والملفات للطالب داخل المدرسة</p>
+          </div>
 
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300">
             <FileText className="w-12 h-12 text-blue-400 mx-auto mb-4" />
@@ -87,7 +109,6 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
           أسعارنا أرخص من المكاتب 🔥
         </p>
         <div className="flex flex-col md:flex-row justify-between gap-6 mb-12">
-          {/* جدول الأسعار */}
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20 w-full md:w-1/3">
             <h4 className="text-white font-semibold mb-2 text-lg text-center">الأسعار قبل وبعد الخصم</h4>
             <table className="w-full text-white text-center border-collapse">
@@ -113,7 +134,6 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
             </table>
           </div>
 
-          {/* زر الطلب */}
           <div className="flex flex-col items-center justify-center w-full md:w-2/3">
             <button
               onClick={handleStartOrder}
@@ -135,54 +155,48 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
         </div>
 
         {/* Modal الشروط والقواعد */}
-        {/* Modal الشروط والقواعد */}
-{showAgreement && (
-  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-    <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 w-11/12 max-w-lg text-white font-sans">
-      <h2 className="text-2xl font-bold mb-4 text-yellow-400 text-center">الشروط والقواعد</h2>
-      
-      <ul className="list-disc list-inside mb-6 space-y-2 text-gray-200 text-lg leading-relaxed">
-        <li>استخدام أسماء وهمية أو غير صحيحة (مثل حيوانات أو جماد) يؤدي لإلغاء الطلب.</li>
-        <li>إرسال الطلبات بشكل متكرر يعتبر سبام، وسيتم تحصيل ثمن الطلبات المكررة.</li>
-        <li>عدم دفع قيمة الطلب يعتبر مخالفة وسيتم التواصل مع الجهات المختصة.</li>
-        <li>لا يتحمل الفريق أي مسؤولية عن المعلومات غير الصحيحة المقدمة من المستخدم.</li>
-        <li>يتم التعامل مع أي مخالفة للقواعد بجدية وفق النظام الداخلي.</li>
-        <li>أي محاولة لإساءة استخدام الخدمة تؤدي للحظر الدائم من الطلبات.</li>
-        <li>أي تسريب للملخصات قد يعرضك للمسائلة القانونية.</li>
-        <li>أنا لا أذهب إليك، أنا موجود في الصف، تعال إليّ للحصول على الطلب.</li>
+        {showAgreement && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 w-11/12 max-w-lg text-white font-sans">
+              <h2 className="text-2xl font-bold mb-4 text-yellow-400 text-center">الشروط والقواعد</h2>
 
+              <ul className="list-disc list-inside mb-6 space-y-2 text-gray-200 text-lg leading-relaxed">
+                <li>استخدام أسماء وهمية أو غير صحيحة (مثل حيوانات أو جماد) يؤدي لإلغاء الطلب.</li>
+                <li>إرسال الطلبات بشكل متكرر يعتبر سبام، وسيتم تحصيل ثمن الطلبات المكررة.</li>
+                <li>عدم دفع قيمة الطلب يعتبر مخالفة وسيتم التواصل مع الجهات المختصة.</li>
+                <li>لا يتحمل الفريق أي مسؤولية عن المعلومات غير الصحيحة المقدمة من المستخدم.</li>
+                <li>يتم التعامل مع أي مخالفة للقواعد بجدية وفق النظام الداخلي.</li>
+                <li>أي محاولة لإساءة استخدام الخدمة تؤدي للحظر الدائم من الطلبات.</li>
+                <li>أي تسريب للملخصات قد يعرضك للمسائلة القانونية.</li>
+                <li>أنا لا أذهب إليك، أنا موجود في الصف، تعال إليّ للحصول على الطلب.</li>
+                <li>أوافق على تسجيل موقعي التقريبي ضمن بيانات الطلب لحماية الخدمة.</li>
+              </ul>
 
-      </ul>
+              <div className="flex items-start mb-6">
+                <input
+                  type="checkbox"
+                  id="agree"
+                  checked={agreed}
+                  onChange={() => setAgreed(!agreed)}
+                  className="mt-1 w-6 h-6 mr-4"
+                />
+                <label htmlFor="agree" className="text-gray-300 text-lg leading-snug">
+                  أقر بأنني قرأت جميع الشروط والقواعد وأوافق عليها
+                </label>
+              </div>
 
-      <div className="flex items-start mb-6">
-        <input
-          type="checkbox"
-          id="agree"
-          checked={agreed}
-          onChange={() => setAgreed(!agreed)}
-          className="mt-1 w-6 h-6 mr-4"
-        />
-        <label
-          htmlFor="agree"
-          className="text-gray-300 text-lg leading-snug"
-        >
-          أقر بأنني قرأت جميع الشروط والقواعد وأوافق عليها
-        </label>
-      </div>
-
-      <button
-        disabled={!agreed}
-        onClick={confirmAgreement}
-        className={`w-full py-3 rounded-xl text-white font-bold transition-all duration-300 ${
-          agreed ? "bg-green-500 hover:bg-green-600" : "bg-gray-600 cursor-not-allowed"
-        }`}
-      >
-        ابدأ الطلب
-      </button>
-    </div>
-  </div>
-)}
-
+              <button
+                disabled={!agreed}
+                onClick={confirmAgreement}
+                className={`w-full py-3 rounded-xl text-white font-bold transition-all duration-300 ${
+                  agreed ? "bg-green-500 hover:bg-green-600" : "bg-gray-600 cursor-not-allowed"
+                }`}
+              >
+                ابدأ الطلب
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
