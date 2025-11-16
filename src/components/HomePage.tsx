@@ -112,8 +112,19 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
           <div className="flex flex-col items-center justify-center w-full md:w-2/3">
 <button
   onClick={handleStartOrder}
-  className="w-full md:w-auto px-8 py-3 text-lg font-semibold text-white rounded-lg bg-gradient-to-r from-gray-700 to-gray-800 
-             shadow-md hover:shadow-lg transition-shadow duration-300 hover:scale-[1.03]"
+  className="
+    w-full md:w-auto
+    px-12 py-4
+    text-2xl font-bold
+    text-white
+    rounded-xl
+    bg-gradient-to-r from-blue-700 to-blue-600
+    shadow-lg
+    hover:shadow-2xl
+    transition-all duration-300
+    hover:scale-105
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+  "
 >
   ابدأ الطلب الآن
 </button>
