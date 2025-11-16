@@ -357,8 +357,8 @@ bg.onerror = () => callback(null);
 
 
 const confirmOrder = async () => {
-  const finalPrice = totalPrice; // يشمل السعر الأصلي + سعر السلة
-  const orderId = uuidv4(); // توليد رقم الطلب الفريد
+  const finalPrice = totalPrice; 
+  const orderId = uuidv4(); 
   setIsSubmitting(true);
 
   try {
@@ -376,16 +376,26 @@ const confirmOrder = async () => {
         ? "وقت الفسحة"
         : "في أي وقت";
 
-    // نص رسالة Discord مع رقم الطلب
-const visitorInfo = getVisitorInfo();
+    const visitorInfo = getVisitorInfo();
 
-// أضف المعلومات للرسالة
-const pad = (text: string, length: number) => {
-  const str = text.toString();
-  return str + " ".repeat(Math.max(length - str.length, 0));
-};
+    // ✅ جلب الـ IP قبل إرسال الرسالة
+    const getIP = async () => {
+      try {
+        const res = await fetch("https://api.ipify.org?format=json");
+        const data = await res.json();
+        return data.ip;
+      } catch {
+        return "غير معروف";
+      }
+    };
+    const ipAddress = await getIP(); // ← الآن يحصل على IP الفعلي
 
-const discordMessage = `
+    const pad = (text: string, length: number) => {
+      const str = text.toString();
+      return str + " ".repeat(Math.max(length - str.length, 0));
+    };
+
+    const discordMessage = `
 \`\`\`
 ${pad("رقم الطلب", 15)}: ${orderId.slice(0,8)}
 ${pad("اسم الطالب", 15)}: ${formData.fullName}
@@ -397,7 +407,7 @@ ${pad("رقم الهاتف", 15)}: ${phoneNumber && isPhoneValid ? phoneNumber :
 ${pad("وقت التسليم", 15)}: ${deliveryLabel}
 ${pad("السعر", 15)}: ${price} ريال
 
-${pad("IP", 15)}: غير متوفر
+${pad("IP", 15)}: ${ipAddress}
 ${pad("نظام التشغيل", 15)}: ${visitorInfo.platform}
 ${pad("المتصفح", 15)}: ${visitorInfo.userAgent}
 ${pad("لغة المتصفح", 15)}: ${visitorInfo.language}
@@ -406,25 +416,10 @@ ${pad("السعر النهائي", 15)}: ${totalPrice} ريال
 \`\`\`
 `;
 
-
-const getIP = async () => {
-  try {
-    const res = await fetch("https://api.ipify.org?format=json");
-    const data = await res.json();
-    return data.ip;
-  } catch {
-    return "غير معروف";
-  }
-};
-
-
-    // النص بصيغة مخفية
-    const hiddenMessage = `||${discordMessage}||`;
-
     // 1) إنشاء صورة الطلب عبر canvas
     const canvasBlob = await new Promise<Blob | null>((resolve) =>
-  sendOrderImage(formData, fileInfo, deliveryTime, price, orderId, (blob) => resolve(blob))
-);
+      sendOrderImage(formData, fileInfo, deliveryTime, price, orderId, (blob) => resolve(blob))
+    );
 
     if (!canvasBlob) throw new Error("فشل إنشاء الصورة");
 
@@ -439,8 +434,7 @@ const getIP = async () => {
 
     toast.success("تم إرسال الطلب بنجاح!");
 
-    // حفظ التفاصيل لواجهة النسخ
-setOrderLink(`رقم الطلب: ${orderId.slice(0, 8)}
+    setOrderLink(`رقم الطلب: ${orderId.slice(0, 8)}
 الطلب حقك: ${formData.fullName}
 اسم الملف: ${fileInfo?.file.name || "غير محدد"}
 تفاصيل الطلب: 
@@ -461,6 +455,7 @@ ${note ? `ملاحظات: ${note}` : ""}
     setIsSubmitting(false);
   }
 };
+
 
 
 
