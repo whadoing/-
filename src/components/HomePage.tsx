@@ -108,25 +108,17 @@ export default function HomePage({ onStartOrder, onAdminAccess }: HomePageProps)
             </table>
           </div>
 
-          {/* Order Button */}
-<div className="flex justify-center mt-6">
+{/* Order Button */}
+<div className="flex flex-col items-center justify-center w-full md:w-2/3">
   <button
     onClick={handleStartOrder}
-    className="
-      bg-gradient-to-r from-blue-700 to-blue-600
-      hover:from-blue-600 hover:to-blue-500
-      text-white font-bold
-      py-3 px-10
-      rounded-2xl
-      shadow-2xl hover:shadow-blue-500/30
-      transition-all duration-300
-      transform hover:scale-105
-    "
+    className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700
+               text-white font-bold py-4 px-12 rounded-2xl text-xl shadow-2xl
+               hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105"
   >
     ابدأ الطلب الآن
   </button>
 </div>
-
         </div>
 
         {/* Working Hours + Contact */}
