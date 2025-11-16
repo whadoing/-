@@ -325,22 +325,31 @@ const sendOrderImage = async (
     lines.push({ label: "السعر: ", value: price + " ريال" });
 
     // بداية رسم النص من منتصف الصورة عموديًا
-    let startY = height / 2 - (lines.length * lineHeight) / 2;
+// lines: مصفوفة من { label, value }
+// width, height: أبعاد الصورة
+const lineSpacing = 10; // مسافة بين كل Label+Value وسطر التالي
+const valueOffset = 30; // المسافة بين Label و Value داخل نفس السطر
+
+// حساب الارتفاع الإجمالي لكل الأسطر
+const totalHeight = lines.length * (valueOffset + lineSpacing);
+
+// بدء الرسم من منتصف الصورة عموديًا
+let startY = height / 2 - totalHeight / 2;
 
 lines.forEach(line => {
-  // Label باللون الأبيض بدون Glow
+  // رسم Label
   ctx.fillStyle = "#FFFFFF";
   ctx.shadowBlur = 0;
   ctx.fillText(line.label, width / 2, startY);
 
-  // Value باللون الأبيض مع Glow أرجواني، أسفل Label
+  // رسم Value مع Glow
   ctx.fillStyle = "#FFFFFF";
   ctx.shadowColor = "#8A2BE2"; // أرجواني
   ctx.shadowBlur = 15;
-  ctx.fillText(line.value, width / 2, startY + 30); // 30px أسفل Label
+  ctx.fillText(line.value, width / 2, startY + valueOffset);
 
-  // زيادة startY للسطر التالي
-  startY += lineHeight + 30; // ارتفاع كل سطر + مسافة بين Label و Value
+  // تحديث startY للسطر التالي
+  startY += valueOffset + lineSpacing;
 });
 
     canvas.toBlob(callback, "image/png");
